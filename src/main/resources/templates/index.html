@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Logistics API | Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="app-container">
+    <header class="main-header">
+        <h1>Logistics System <span class="badge">v1.0</span></h1>
+        <nav>
+            <a th:href="@{/api/v1/health}" class="nav-link">API Status</a>
+        </nav>
+    </header>
+
+    <main class="content-wrapper">
+        <section class="hero-section">
+            <h2>Welcome to the Masterclass API</h2>
+            <p>Architecture: <strong>Spring Boot 3.5.9</strong> | Java 21</p>
+        </section>
+
+        <section class="feature-grid">
+            <div class="card">
+                <h3>Clean Code</h3>
+                <p>Implemented using SOLID principles and Design Patterns.</p>
+            </div>
+            <div class="card">
+                <h3>Stream API</h3>
+                <p>All data transformations use Java 8+ functional style.</p>
+            </div>
+            <div class="card">
+                <h3>Lombok</h3>
+                <p>Boilerplate reduction through Annotation Processing.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 Intelligent Logistics API | Senior Architect Edition</p>
+    </footer>
+</div>
+</body>
+</html>
