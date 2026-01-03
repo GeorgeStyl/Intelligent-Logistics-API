@@ -6,40 +6,53 @@
     <title>Intelligent Logistics API | Home</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
-<div class="app-container">
-    <header class="main-header">
-        <h1>Logistics System <span class="badge">v1.0</span></h1>
-        <nav>
-            <a th:href="@{/api/v1/health}" class="nav-link">API Status</a>
-        </nav>
-    </header>
+    <body>
+        <div class="app-container">
+            <header class="main-header">
+                <h1>Logistics System <span class="badge">v1.0</span></h1>
+                <nav>
+                    <a th:href="@{/api/v1/health}" class="nav-link">API Status</a>
+                </nav>
+            </header>
 
-    <main class="content-wrapper">
-        <section class="hero-section">
-            <h2>Welcome to the Masterclass API</h2>
-            <p>Architecture: <strong>Spring Boot 3.5.9</strong> | Java 21</p>
-        </section>
+            <main class="content-wrapper">
+                <section class="hero-section">
+                    <h2>Welcome to the Masterclass API</h2>
+                    <p>Architecture: <strong>Spring Boot 3.5.9</strong> | Java 21</p>
+                </section>
 
-        <section class="feature-grid">
-            <div class="card">
-                <h3>Clean Code</h3>
-                <p>Implemented using SOLID principles and Design Patterns.</p>
-            </div>
-            <div class="card">
-                <h3>Stream API</h3>
-                <p>All data transformations use Java 8+ functional style.</p>
-            </div>
-            <div class="card">
-                <h3>Lombok</h3>
-                <p>Boilerplate reduction through Annotation Processing.</p>
-            </div>
-        </section>
-    </main>
+                <section class="feature-grid">
+                    <form id="shippingForm">
+                        <div class="card">
+                            <h3>Standard Shipping</h3>
+                            <button type="button" onclick="submitShipping('STANDARD')">Select Standard</button>
+                        </div>
 
-    <footer class="main-footer">
-        <p>&copy; 2026 Intelligent Logistics API | Senior Architect Edition</p>
-    </footer>
-</div>
-</body>
+                        <div class="card">
+                            <h3>Express Shipping</h3>
+                            <button type="button" onclick="submitShipping('EXPRESS')">Select Express</button>
+                        </div>
+
+                        <div class="card">
+                            <h3>Free Shipping</h3>
+                            <button type="button" onclick="submitShipping('FREE')">Select Free</button>
+                        </div>
+                    </form>
+                </section>
+            </main>
+
+            <script>
+                // ! Non-Blocking: Using Fetch API to post data without refreshing the page
+                async function submitShipping(type) {
+                    const response = await fetch('/api/shipping/process', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ shippingType: type })
+                    });
+                    const result = await response.json();
+                    console.log('Processed:', result);
+                }
+            </script>
+        </div>
+    </body>
 </html>
