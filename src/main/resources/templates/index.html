@@ -1,58 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligent Logistics API | Home</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Logistics Fleet Manager</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-    <body>
-        <div class="app-container">
-            <header class="main-header">
-                <h1>Logistics System <span class="badge">v1.0</span></h1>
-                <nav>
-                    <a th:href="@{/api/v1/health}" class="nav-link">API Status</a>
-                </nav>
-            </header>
+<body>
+<div class="container">
+    <h2>Create New Vehicle</h2>
+    <form id="vehicleForm">
+        <label for="type">Vehicle Type:</label>
+        <select id="type" name="type">
+            <option value="truck">Truck</option>
+            <option value="van">Van</option>
+            <option value="drone">Drone</option>
+        </select>
 
-            <main class="content-wrapper">
-                <section class="hero-section">
-                    <h2>Welcome to the Masterclass API</h2>
-                    <p>Architecture: <strong>Spring Boot 3.5.9</strong> | Java 21</p>
-                </section>
+        <label for="capacity">Capacity (kg):</label>
+        <input type="number" id="capacity" name="capacity" required>
 
-                <section class="feature-grid">
-                    <form id="shippingForm">
-                        <div class="card">
-                            <h3>Standard Shipping</h3>
-                            <button type="button" onclick="submitShipping('STANDARD')">Select Standard</button>
-                        </div>
+        <label for="speed">Max Speed (km/h):</label>
+        <input type="number" id="speed" name="speed" required>
 
-                        <div class="card">
-                            <h3>Express Shipping</h3>
-                            <button type="button" onclick="submitShipping('EXPRESS')">Select Express</button>
-                        </div>
+        <button type="submit" id="submitBtn">Deploy Vehicle</button>
+    </form>
 
-                        <div class="card">
-                            <h3>Free Shipping</h3>
-                            <button type="button" onclick="submitShipping('FREE')">Select Free</button>
-                        </div>
-                    </form>
-                </section>
-            </main>
+    <div id="result" class="hidden">
+        <h3 id="statusTitle">Vehicle Deployed!</h3>
+        <p id="vehicleDetails"></p>
+    </div>
+</div>
 
-            <script>
-                // ! Non-Blocking: Using Fetch API to post data without refreshing the page
-                async function submitShipping(type) {
-                    const response = await fetch('/api/shipping/process', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ shippingType: type })
-                    });
-                    const result = await response.json();
-                    console.log('Processed:', result);
-                }
-            </script>
-        </div>
-    </body>
+<script>
+    document.getElementById('vehicleForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('submitBtn');
+        const type = document.getElementById('type').value;
+        const capacity = document.getElementById('capacity').value;
+        const speed = document.getElementById('speed').value;
+
+        const resultDiv = document.getElementById('result');
+        const detailsP = document.getElementById('vehicleDetails');
+        const statusTitle = document.getElementById('statusTitle');
+
+        // * Disable button to prevent double submission during non-blocking processing
+        btn.disabled = true;
+        btn.innerText = "Processing...";
+
+        try {
+            // * Calling the @RestController endpoint using Fetch API
+            const response = await fetch(`/api/vehicle/create?type=${type}&capacity=${capacity}&speed=${speed}`);
+
+            if (!response.ok) throw new Error('Deployment failed');
+
+            const data = await response.json();
+
+            // * Display logic using fields defined in the Vehicle abstraction
+            resultDiv.classList.remove('hidden', 'error');
+            statusTitle.innerText = "Vehicle Deployed Successfully!";
+            detailsP.innerText = `Type: ${data.vehicleType} | Capacity: ${data.vehicleCapacity}kg | Speed: ${data.vehicleSpeed}km/h`;
+
+        } catch (error) {
+            // ! Flag: ERROR HANDLING
+            resultDiv.classList.remove('hidden');
+            resultDiv.classList.add('error');
+            statusTitle.innerText = "Error!";
+            detailsP.innerText = "Could not deploy vehicle. Please check if the backend is running.";
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Deploy Vehicle";
+        }
+    });
+</script>
+</body>
 </html>
