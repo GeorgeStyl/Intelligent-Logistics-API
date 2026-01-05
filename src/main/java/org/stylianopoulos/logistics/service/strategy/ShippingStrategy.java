@@ -6,4 +6,5 @@ import reactor.core.publisher.Mono;
 @FunctionalInterface
 public interface ShippingStrategy {
     Mono<Double> calculateCost(double weight);
+    String getStrategyName();
 }
