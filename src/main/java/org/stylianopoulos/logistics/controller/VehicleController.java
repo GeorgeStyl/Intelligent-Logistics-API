@@ -1,25 +1,47 @@
 package org.stylianopoulos.logistics.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.stylianopoulos.logistics.model.abstraction.Vehicle;
 import org.stylianopoulos.logistics.service.VehicleFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * * @RestController marks this class as a handler for REST requests.
  * * All return objects are automatically serialized to JSON.
  */
 @RestController
-@RequestMapping("/api/vehicle")
+@RequestMapping("/api/vehicles")
 public class VehicleController {
 
     private final VehicleFactory vehicleFactory;
+    private final List<Vehicle> database = new ArrayList<>();
 
     public VehicleController(VehicleFactory vehicleFactory) {
         this.vehicleFactory = vehicleFactory;
     }
+
+    @PostMapping
+    public ResponseEntity<Vehicle> addVehicle(@RequestBody Map<String, Object> payload) {
+        String type = (String) payload.get("type");
+
+        // Convert Double (from JSON) to Integer (for Factory)
+        int capacity = ((Number) payload.get("capacity")).intValue();
+        int speed = ((Number) payload.get("speed")).intValue();
+
+        // Now the types match your Factory signature
+        Vehicle newVehicle = vehicleFactory.createVehicle(type, capacity, speed);
+
+        database.add(newVehicle);
+        return ResponseEntity.ok(newVehicle);
+    }
+
+    @GetMapping
+    public List<Vehicle> getAllVehicles() { return database; }
+
 
     // ! Flag: VEHICLE CREATION ENDPOINT
     /**
