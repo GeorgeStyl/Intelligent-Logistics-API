@@ -1,4 +1,4 @@
-package org.stylianopoulos.logistics.service;
+package org.stylianopoulos.logistics.service.strategy;
 
 import reactor.core.publisher.Mono;
 
