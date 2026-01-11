@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS shipping_requests;
 CREATE TABLE shipping_requests (
    id SERIAL PRIMARY KEY,   vehicle_type VARCHAR(50) NOT NULL,
    payload_weight DOUBLE PRECISION NOT NULL,
-   velocity DOUBLE PRECISION NOT NULL,
+   velocity INT NOT NULL,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -13,6 +13,6 @@ DROP TABLE IF EXISTS vehicles;
 CREATE TABLE  vehicles (
     id SERIAL PRIMARY KEY,    vehicle_type VARCHAR(50) NOT NULL,
     payload_weight DOUBLE PRECISION NOT NULL,
-    velocity DOUBLE PRECISION NOT NULL,
+    velocity INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
