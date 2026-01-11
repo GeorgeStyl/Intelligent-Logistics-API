@@ -1,13 +1,13 @@
-package org.stylianopoulos.logistics.model;
+package org.stylianopoulos.logistics.model.impl;
 
-import org.stylianopoulos.logistics.model.abstraction.Vehicle;
+import org.stylianopoulos.logistics.model.Vehicle;
 
-public class Van extends Vehicle {
+public class Truck extends Vehicle {
     private final String type;
     private final int capacity;
     private final int speed;
 
-    public Van(String type, int capacity, int speed) {
+    public Truck(String type, int capacity, int speed) {
         this.type = type;
         this.capacity = capacity;
         this.speed = speed;

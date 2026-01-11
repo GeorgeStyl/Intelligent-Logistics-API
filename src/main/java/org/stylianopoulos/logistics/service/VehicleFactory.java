@@ -1,6 +1,6 @@
 package org.stylianopoulos.logistics.service;
 
-import org.stylianopoulos.logistics.model.abstraction.Vehicle;
+import org.stylianopoulos.logistics.model.Vehicle;
 
 
 public interface VehicleFactory {

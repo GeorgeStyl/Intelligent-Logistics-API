@@ -1,7 +1,14 @@
-package org.stylianopoulos.logistics.model.abstraction;
+package org.stylianopoulos.logistics.model;
 
+import org.springframework.data.annotation.Id;
 
 public abstract class Vehicle {
+    @Id
+    private int id;
+    private String vehicleType;
+    private Double capacity;
+    private int vehicleSpeed;
+
     public abstract String getVehicleType();
     public abstract int getVehicleCapacity();
     public abstract int getVehicleSpeed();

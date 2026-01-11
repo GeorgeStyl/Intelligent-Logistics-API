@@ -1,9 +1,9 @@
 package org.stylianopoulos.logistics.service;
 
-import org.stylianopoulos.logistics.model.Drone;
-import org.stylianopoulos.logistics.model.Truck;
-import org.stylianopoulos.logistics.model.Van;
-import org.stylianopoulos.logistics.model.abstraction.Vehicle;
+import org.stylianopoulos.logistics.model.impl.Drone;
+import org.stylianopoulos.logistics.model.impl.Truck;
+import org.stylianopoulos.logistics.model.impl.Van;
+import org.stylianopoulos.logistics.model.Vehicle;
 import org.springframework.stereotype.Service;
 
 
