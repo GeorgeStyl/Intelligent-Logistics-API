@@ -9,9 +9,9 @@ CREATE TABLE shipping_requests (
 );
 
 
-DROP TABLE IF EXISTS vehicle;
+DROP TABLE IF EXISTS vehicles;
 
-CREATE TABLE  vehicle (
+CREATE TABLE  vehicles (
     id SERIAL PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
     licensePlate VARCHAR(50) NOT NULL,
