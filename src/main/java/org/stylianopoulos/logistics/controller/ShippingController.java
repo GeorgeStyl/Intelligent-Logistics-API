@@ -1,41 +1,27 @@
 package org.stylianopoulos.logistics.controller;
 
 import org.stylianopoulos.logistics.domain.entity.Order;
-import org.stylianopoulos.logistics.repository.OrderRepository;
-import org.stylianopoulos.logistics.service.ShippingContext;
+import org.stylianopoulos.logistics.service.OrderAsyncService;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/orders")
 public class ShippingController {
 
-    private final ShippingContext shippingContext;
-    private final OrderRepository orderRepository;
+    private final OrderAsyncService orderAsyncService;
 
-    public ShippingController(ShippingContext shippingContext, OrderRepository orderRepository) {
-        this.shippingContext = shippingContext;
-        this.orderRepository = orderRepository;
+    public ShippingController(OrderAsyncService orderAsyncService) {
+        this.orderAsyncService = orderAsyncService;
     }
 
+    // ! Thread 1: Responds instantly to the client
     @PostMapping("/process")
-    public Mono<Order> process(@RequestBody Order orderInput) {
-        return shippingContext.execute(orderInput.shippingType(), orderInput.weight())
-                .flatMap(calculatedCost -> {
-                    // ? Creating the immutable record for persistence
-                    Order finalizedOrder = new Order(
-                            null,
-                            orderInput.customerName(),
-                            orderInput.weight(),
-                            orderInput.destination(),
-                            orderInput.shippingType(),
-                            "PENDING",
-                            calculatedCost,
-                            LocalDateTime.now()
-                    );
-                    return orderRepository.save(finalizedOrder);
-                })
-                .log();
+    public Mono<String> process(@RequestBody Order orderInput) {
+        // * Triggering Thread 2 (The Hand-off)
+        orderAsyncService.processOrderInBackground(orderInput);
+
+        // * This response is sent back to Postman immediately
+        return Mono.just("PENDING");
     }
 }
