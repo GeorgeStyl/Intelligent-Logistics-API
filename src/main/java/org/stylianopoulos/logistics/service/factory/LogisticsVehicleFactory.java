@@ -1,4 +1,4 @@
-package org.stylianopoulos.logistics.service;
+package org.stylianopoulos.logistics.service.factory;
 
 import org.stylianopoulos.logistics.model.impl.Drone;
 import org.stylianopoulos.logistics.model.impl.Truck;
