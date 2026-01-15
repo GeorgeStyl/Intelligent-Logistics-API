@@ -1,18 +1,34 @@
 DROP TABLE IF EXISTS shipping_requests;
 
 CREATE TABLE shipping_requests (
-   id SERIAL PRIMARY KEY,   vehicle_type VARCHAR(50) NOT NULL,
+   id SERIAL PRIMARY KEY,
+   vehicle_type VARCHAR(50) NOT NULL,
    payload_weight DOUBLE PRECISION NOT NULL,
    velocity INT NOT NULL,
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
-DROP TABLE IF EXISTS vehicles;
+DROP TABLE IF EXISTS vehicle;
 
-CREATE TABLE  vehicles (
-    id SERIAL PRIMARY KEY,    vehicle_type VARCHAR(50) NOT NULL,
-    payload_weight DOUBLE PRECISION NOT NULL,
-    velocity INT NOT NULL,
+CREATE TABLE  vehicle (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,
+    licensePlate VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+DROP TABLE IF EXISTS orders;
+
+CREATE TABLE orders(
+    id SERIAL PRIMARY KEY,
+    customerName VARCHAR(50) NOT NULL,
+    weight DOUBLE PRECISION NOT NULL,
+    destination VARCHAR(50) NOT NULL,
+    shippingType VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    cost DOUBLE PRECISION NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
