@@ -1,4 +1,4 @@
-package org.stylianopoulos.logistics;
+package org.stylianopoulos.logistics.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
