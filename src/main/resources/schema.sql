@@ -21,14 +21,13 @@ CREATE TABLE  vehicles (
 
 DROP TABLE IF EXISTS orders;
 
-CREATE TABLE orders(
+CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
-    customerName VARCHAR(50) NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
     weight DOUBLE PRECISION NOT NULL,
-    destination VARCHAR(50) NOT NULL,
-    shippingType VARCHAR(50) NOT NULL,
+    destination VARCHAR(255) NOT NULL,
+    shipping_type VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
     cost DOUBLE PRECISION NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-

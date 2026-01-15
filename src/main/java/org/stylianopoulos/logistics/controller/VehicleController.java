@@ -3,7 +3,7 @@ package org.stylianopoulos.logistics.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.stylianopoulos.logistics.model.Vehicle;
-import org.stylianopoulos.logistics.service.VehicleFactory;
+import org.stylianopoulos.logistics.service.factory.VehicleFactory;
 
 import java.util.ArrayList;
 import java.util.List;
