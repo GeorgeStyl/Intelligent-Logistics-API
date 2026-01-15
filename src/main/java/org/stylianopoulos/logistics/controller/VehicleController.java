@@ -17,6 +17,8 @@ import java.util.Map;
 @RequestMapping("/api/vehicles")
 public class VehicleController {
 
+    static int id = 0;
+
     private final VehicleFactory vehicleFactory;
     private final List<Vehicle> database = new ArrayList<>();
 
@@ -28,14 +30,15 @@ public class VehicleController {
     public ResponseEntity<Vehicle> addVehicle(@RequestBody Map<String, Object> payload) {
         String type = (String) payload.get("type");
 
-        // Convert Double (from JSON) to Integer (for Factory)
         int capacity = ((Number) payload.get("capacity")).intValue();
         int speed = ((Number) payload.get("speed")).intValue();
 
-        // Now the types match your Factory signature
-        Vehicle newVehicle = vehicleFactory.createVehicle(type, capacity, speed);
-
+        Vehicle newVehicle = vehicleFactory.createVehicle(id, type, capacity, speed);
+        System.out.println("Vehicle created -> " + newVehicle);
         database.add(newVehicle);
+
+        id++;
+
         return ResponseEntity.ok(newVehicle);
     }
 
@@ -43,7 +46,7 @@ public class VehicleController {
     public List<Vehicle> getAllVehicles() { return database; }
 
 
-    // ! Flag: VEHICLE CREATION ENDPOINT
+    // ! VEHICLE CREATION ENDPOINT
     /**
      * * Creates a vehicle based on query parameters.
      * * Returning the abstraction (Vehicle) allows polymorphic responses (Truck, Drone, Van).
@@ -55,6 +58,6 @@ public class VehicleController {
             @RequestParam int speed) {
 
         // * The controller does not know HOW to make a Truck; it asks the Factory.
-        return vehicleFactory.createVehicle(type, capacity, speed);
+        return vehicleFactory.createVehicle(id, type, capacity, speed);
     }
 }

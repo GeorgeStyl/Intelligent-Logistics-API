@@ -4,5 +4,5 @@ import org.stylianopoulos.logistics.model.Vehicle;
 
 
 public interface VehicleFactory {
-    Vehicle createVehicle(String type, int capacity, int speed);
+    Vehicle createVehicle(int id, String type, int capacity, int speed);
 }

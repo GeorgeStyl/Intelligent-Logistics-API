@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 public class LogisticsVehicleFactory implements VehicleFactory {
 
     @Override
-    public Vehicle createVehicle(String type, int capacity, int speed) {
+    public Vehicle createVehicle(int id, String type, int capacity, int speed) {
         // * Strategy: Map the string type to the correct concrete object
         return switch (type.toLowerCase()) {
-            case "truck" -> new Truck(type, capacity, speed);
-            case "van" -> new Van(type, capacity, speed);
-            case "drone" -> new Drone(type, capacity, speed);
+            case "truck" -> new Truck(id, type, capacity, speed);
+            case "van" -> new Van(id, type, capacity, speed);
+            case "drone" -> new Drone(id, type, capacity, speed);
             default -> throw new IllegalArgumentException("Unknown vehicle type: " + type);
         };
     }

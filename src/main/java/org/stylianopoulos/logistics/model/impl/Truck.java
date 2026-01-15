@@ -7,7 +7,7 @@ public class Truck extends Vehicle {
     private final int capacity;
     private final int speed;
 
-    public Truck(String type, int capacity, int speed) {
+    public Truck(int id, String type, int capacity, int speed) {
         this.type = type;
         this.capacity = capacity;
         this.speed = speed;

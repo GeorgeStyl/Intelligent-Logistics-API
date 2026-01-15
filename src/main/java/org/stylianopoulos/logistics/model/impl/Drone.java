@@ -4,14 +4,14 @@ import org.stylianopoulos.logistics.model.Vehicle;
 
 
 public class Drone extends Vehicle {
+    private final int speed;
     private final String type;
     private final int capacity;
-    private final int speed;
 
-    public Drone(String type, int capacity, int speed) {
+    public Drone(int id, String type, int capacity, int speed) {
+        this.speed = speed;
         this.type = type;
         this.capacity = capacity;
-        this.speed = speed;
     }
 
     @Override
@@ -21,5 +21,9 @@ public class Drone extends Vehicle {
     public int getVehicleCapacity() { return this.capacity; }
 
     @Override
-    public int getVehicleSpeed() { return this.speed; }
+    public int getVehicleSpeed() {
+        return 0;
+    }
+
+
 }
