@@ -6,6 +6,8 @@ import org.stylianopoulos.logistics.service.strategy.ShippingContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
 // ! Async Service Orchestration
@@ -23,10 +25,14 @@ public class OrderAsyncService {
     // ! Non-Blocking to Async Bridge
     @Async("logisticsExecutor")
     public CompletableFuture<Order> processOrderInBackground(Order orderInput) {
-        return shippingContext.execute(orderInput.shippingType(), orderInput.weight())
-                // ? Processed Order obj
+        return Mono.delay(Duration.ofSeconds(3))
+                // ! After 3 seconds, proceed to shipping context logic
+                .flatMap(delay -> shippingContext.execute(
+                            orderInput.shippingType(), orderInput.weight()
+                ))
+                // ? Map the result to our final Processed Order object
                 .map(cost -> createProcessedOrder(orderInput, cost))
-                // ? Bridges the Project Reactor Mono back to Java's CompletableFuture.
+                // ! Bridge: Convert the reactive stream back to a Java Future for the @Async caller
                 .toFuture();
     }
 
