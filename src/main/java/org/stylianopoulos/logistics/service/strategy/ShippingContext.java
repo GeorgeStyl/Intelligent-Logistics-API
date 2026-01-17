@@ -1,6 +1,5 @@
 package org.stylianopoulos.logistics.service.strategy;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -41,16 +40,6 @@ public class ShippingContext {
                 // ? Map to skip if - else
                 .flatMap(key -> Mono.justOrEmpty(strategies.get(key)))
                 .flatMap(strategy -> strategy.calculateCost(weight))
-                // * ==========================================
-                // * NON-BLOCKING "SLEEP" SECTION
-                // * ==========================================
-                // ! Calling Thread.sleep() in a (nested) method that is @Async,
-                // ! would create a "Blocking Chain".
-                // ! The parent caller is @Async ( OrderAsyncServicce > processOrderInBackground() )
-                // ! prevents non-blocking
-                // * This operator detaches the execution from the current thread,
-                // * "sleep" for n seconds
-                .delayElement(Duration.ofSeconds(3))
                 .doOnNext(cost -> log.info("Calculated shipping cost for type {}: {}", type, cost))
                 .switchIfEmpty(Mono.error(() -> new IllegalArgumentException("Unsupported shipping: " + type)));
     }
