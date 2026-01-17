@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS shipping_requests;
-
 CREATE TABLE shipping_requests (
    id SERIAL PRIMARY KEY,
    vehicle_type VARCHAR(50) NOT NULL,
@@ -9,7 +7,6 @@ CREATE TABLE shipping_requests (
 );
 
 
-DROP TABLE IF EXISTS vehicles;
 
 CREATE TABLE  vehicles (
     id SERIAL PRIMARY KEY,
@@ -19,7 +16,6 @@ CREATE TABLE  vehicles (
 );
 
 
-DROP TABLE IF EXISTS orders;
 
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
