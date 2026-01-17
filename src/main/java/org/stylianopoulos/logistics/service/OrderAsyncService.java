@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import java.util.concurrent.CompletableFuture;
 
-// ! Use Flag: Async Service Orchestration
+// ! Async Service Orchestration
 @Service
 public class OrderAsyncService {
 
@@ -20,7 +20,7 @@ public class OrderAsyncService {
         this.orderRepository = orderRepository;
     }
 
-    // ! Use Flag: Non-Blocking to Async Bridge
+    // ! Non-Blocking to Async Bridge
     @Async("logisticsExecutor")
     public CompletableFuture<Order> processOrderInBackground(Order orderInput) {
         return shippingContext.execute(orderInput.shippingType(), orderInput.weight())
@@ -30,7 +30,6 @@ public class OrderAsyncService {
                 .toFuture();
     }
 
-    // ! Use Flag: Domain Logic (Immutability)
     private Order createProcessedOrder(Order input, Double calculatedCost) {
         // * Using the Record constructor ensures thread-safety through immutability.
         return new Order(
