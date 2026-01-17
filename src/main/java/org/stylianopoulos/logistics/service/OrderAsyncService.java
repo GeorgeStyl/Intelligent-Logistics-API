@@ -2,10 +2,13 @@ package org.stylianopoulos.logistics.service;
 
 import org.stylianopoulos.logistics.domain.entity.Order;
 import org.stylianopoulos.logistics.repository.OrderRepository;
+import org.stylianopoulos.logistics.service.strategy.ShippingContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+import reactor.core.publisher.Mono;
+import java.util.concurrent.CompletableFuture;
 
+// ! Use Flag: Async Service Orchestration
 @Service
 public class OrderAsyncService {
 
@@ -17,28 +20,34 @@ public class OrderAsyncService {
         this.orderRepository = orderRepository;
     }
 
-    // ! Thread 2
+    // ! Use Flag: Non-Blocking to Async Bridge
     @Async("logisticsExecutor")
-    public void processOrderInBackground(Order orderInput) {
-        // ? The business logic and DB save happen on 'LogisticsWorker-n'
-        shippingContext.execute(orderInput.shippingType(), orderInput.weight())
-                .flatMap(cost -> {
-                    Order finalized = new Order(
-                            null,
-                            orderInput.customerName(),
-                            orderInput.weight(),
-                            orderInput.destination(),
-                            orderInput.shippingType(),
-                            "COMPLETED",
-                            cost,
-                            LocalDateTime.now()
-                    );
-                    return orderRepository.save(finalized);
-                })
-                // * Since it's background, must subscribe to trigger the reactive chain
-                .subscribe(
-                        success -> System.out.println("Background Save Successful: ID " + success.id()),
-                        error -> System.err.println("Background Error: " + error.getMessage())
-                );
+    public CompletableFuture<Order> processOrderInBackground(Order orderInput) {
+        // * Senior Approach: Ensure the pipeline stays as a Mono<Order> before conversion.
+        return shippingContext.execute(orderInput.shippingType(), orderInput.weight())
+
+                // * map: Double -> Order (Success)
+                .map(cost -> createProcessedOrder(orderInput, cost))
+
+                // * flatMap: Wraps the blocking repository call into the reactive flow.
+                // * We use Mono.fromSupplier or fromCallable for blocking JPA saves.
+                .flatMap(order -> Mono.fromCallable(() -> orderRepository.save(order)))
+
+                // * toFuture: Converts Mono<Order> directly to CompletableFuture<Order>.
+                .toFuture();
+    }
+
+    // ! Use Flag: Domain Logic (Immutability)
+    private Order createProcessedOrder(Order input, Double calculatedCost) {
+        // * Using the Record constructor ensures thread-safety through immutability.
+        return new Order(
+                input.id(),
+                input.customerName(),
+                input.weight(),
+                input.shippingType(),
+                input.destination(),
+                "PROCESSED",
+                calculatedCost
+        );
     }
 }
