@@ -1,5 +1,6 @@
 package org.stylianopoulos.logistics.service.strategy;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -26,18 +27,30 @@ public class ShippingContext {
                 ));
     }
 
-    /*
-       The Map generates a hash-functions from both client's shipping type and
-       from all 3 getShippingName() classes (from ShippingStrategy Interface)
-       and by making the comparison between these 2, it finds what class must
-       use
-     */
+
     public Mono<Double> execute(String type, double weight) {
         return Mono.justOrEmpty(type)
+                // * ==========================================
+                // * CONVERTING TO MAP SECTION
+                // * ==========================================
+                // ? The Map generates a hash-functions from both client's shipping type and,
+                // * from all 3 getShippingName() classes (from ShippingStrategy Interface)
+                // * and by making the comparison between these 2, it finds what class must
+                // * use
                 .map(String::toUpperCase)
                 // ? Map to skip if - else
                 .flatMap(key -> Mono.justOrEmpty(strategies.get(key)))
                 .flatMap(strategy -> strategy.calculateCost(weight))
+                // * ==========================================
+                // * NON-BLOCKING "SLEEP" SECTION
+                // * ==========================================
+                // ! Calling Thread.sleep() in a (nested) method that is @Async,
+                // ! would create a "Blocking Chain".
+                // ! The parent caller is @Async ( OrderAsyncServicce > processOrderInBackground() )
+                // ! prevents non-blocking
+                // * This operator detaches the execution from the current thread,
+                // * "sleep" for n seconds
+                .delayElement(Duration.ofSeconds(3))
                 .doOnNext(cost -> log.info("Calculated shipping cost for type {}: {}", type, cost))
                 .switchIfEmpty(Mono.error(() -> new IllegalArgumentException("Unsupported shipping: " + type)));
     }
