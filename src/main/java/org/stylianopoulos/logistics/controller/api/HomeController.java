@@ -1,4 +1,4 @@
-package org.stylianopoulos.logistics.controller;
+package org.stylianopoulos.logistics.controller.api;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

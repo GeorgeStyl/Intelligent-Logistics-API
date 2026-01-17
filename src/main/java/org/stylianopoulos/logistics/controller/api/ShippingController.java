@@ -1,4 +1,4 @@
-package org.stylianopoulos.logistics.controller;
+package org.stylianopoulos.logistics.controller.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
