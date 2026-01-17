@@ -32,7 +32,6 @@ public class OrderAsyncService {
                 ))
                 // ? Map the result to our final Processed Order object
                 .map(cost -> createProcessedOrder(orderInput, cost))
-                // ! Bridge: Convert the reactive stream back to a Java Future for the @Async caller
                 .toFuture();
     }
 
