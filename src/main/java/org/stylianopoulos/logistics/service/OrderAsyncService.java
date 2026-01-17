@@ -23,17 +23,10 @@ public class OrderAsyncService {
     // ! Use Flag: Non-Blocking to Async Bridge
     @Async("logisticsExecutor")
     public CompletableFuture<Order> processOrderInBackground(Order orderInput) {
-        // * Senior Approach: Ensure the pipeline stays as a Mono<Order> before conversion.
         return shippingContext.execute(orderInput.shippingType(), orderInput.weight())
-
-                // * map: Double -> Order (Success)
+                // ? Processed Order obj
                 .map(cost -> createProcessedOrder(orderInput, cost))
-
-                // * flatMap: Wraps the blocking repository call into the reactive flow.
-                // * We use Mono.fromSupplier or fromCallable for blocking JPA saves.
-                .flatMap(order -> Mono.fromCallable(() -> orderRepository.save(order)))
-
-                // * toFuture: Converts Mono<Order> directly to CompletableFuture<Order>.
+                // ? Bridges the Project Reactor Mono back to Java's CompletableFuture.
                 .toFuture();
     }
 
