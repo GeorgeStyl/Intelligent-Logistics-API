@@ -10,8 +10,7 @@ public record ShippingRequest(
         @Id Long id,
         String vehicle_type,
         Double payload_weight,
-        int velocity,
-        Timestamp created_at
+        int velocity
 ) {
     public ShippingRequest {
         if (payload_weight == null) {

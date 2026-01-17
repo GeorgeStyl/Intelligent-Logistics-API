@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 public record Vehicle(
         @Id Long id,
         String type,
-        String licensePlate,
-        // * Senior Tip: Use java.time.LocalDateTime instead of java.sql.Timestamp
-        LocalDateTime created_at
+        String licensePlate
 ) {
 
     public Vehicle {

@@ -5,10 +5,9 @@ import reactor.core.publisher.Mono;
 
 @Component("EXPRESS")
 public class ExpressShipping implements ShippingStrategy {
+
     @Override
-    public Mono<Double> calculateCost(double weight) {
-        return Mono.just(weight * 15.0);
-    }
+    public Mono<Double> calculateCost(double weight) { return Mono.just(weight * 15.0); }
 
     @Override
     public String getStrategyName() {

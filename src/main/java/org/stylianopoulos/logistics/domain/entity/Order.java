@@ -13,8 +13,7 @@ public record Order(
         String destination,
         String shippingType,
         String status,
-        Double cost,
-        LocalDateTime createdAt
+        Double cost
 ) {
     public Order {
         if (customerName == null || customerName.isBlank()) {
@@ -33,6 +32,5 @@ public record Order(
             throw new IllegalArgumentException("Destination is required");
         }
 
-        // ! Status is defined automatically
     }
 }
