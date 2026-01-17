@@ -1,15 +1,13 @@
-package org.stylianopoulos.logistics.service;
+package org.stylianopoulos.logistics.service.strategy;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.stylianopoulos.logistics.service.strategy.ShippingStrategy;
 import reactor.core.publisher.Mono;
 
 
