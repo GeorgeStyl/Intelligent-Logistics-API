@@ -1,23 +1,29 @@
 package org.stylianopoulos.logistics.service.factory;
 
-import org.stylianopoulos.logistics.model.impl.Drone;
-import org.stylianopoulos.logistics.model.impl.Truck;
-import org.stylianopoulos.logistics.model.impl.Van;
-import org.stylianopoulos.logistics.model.Vehicle;
 import org.springframework.stereotype.Service;
-
+import org.stylianopoulos.logistics.model.Vehicle;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
-public class LogisticsVehicleFactory implements VehicleFactory {
+public class LogisticsVehicleFactory {
 
-    @Override
-    public Vehicle createVehicle(int id, String type, int capacity, int speed) {
-        // * Strategy: Map the string type to the correct concrete object
-        return switch (type.toLowerCase()) {
-            case "truck" -> new Truck(id, type, capacity, speed);
-            case "van" -> new Van(id, type, capacity, speed);
-            case "drone" -> new Drone(id, type, capacity, speed);
-            default -> throw new IllegalArgumentException("Unknown vehicle type: " + type);
-        };
+    private final Map<String, VehicleFactory> factoryMap;
+
+    public LogisticsVehicleFactory(List<VehicleFactory> factories) {
+        this.factoryMap = factories.stream()
+                .collect(Collectors.toMap(
+                        factory -> factory.getVehicleType().toUpperCase(),
+                        factory -> factory
+                ));
+    }
+
+    public Vehicle createVehicle(Double capacity, int speed) {
+        VehicleFactory factory = factoryMap.get(type.toUpperCase());
+
+        if (factory == null) throw new IllegalArgumentException("Unknown vehicle type: " + type);
+
+        return factory.createVehicle(capacity, speed);
     }
 }

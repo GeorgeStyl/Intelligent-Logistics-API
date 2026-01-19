@@ -2,7 +2,9 @@ package org.stylianopoulos.logistics.controller.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.stylianopoulos.logistics.dto.VehicleRequestDTO;
 import org.stylianopoulos.logistics.model.Vehicle;
+import org.stylianopoulos.logistics.service.factory.LogisticsVehicleFactory;
 import org.stylianopoulos.logistics.service.factory.VehicleFactory;
 
 import java.util.ArrayList;
@@ -27,19 +29,14 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<Vehicle> addVehicle(@RequestBody Map<String, Object> payload) {
-        String type = (String) payload.get("type");
+    public ResponseEntity<Vehicle> addVehicle(@RequestBody VehicleRequestDTO request) {
+        // * The controller delegates the creation to the Factory Manager
+        Vehicle vehicle = LogisticsVehicleFactory.createVehicle(
+                request.capacity(),
+                request.speed()
+        );
 
-        int capacity = ((Number) payload.get("capacity")).intValue();
-        int speed = ((Number) payload.get("speed")).intValue();
-
-        Vehicle newVehicle = vehicleFactory.createVehicle(id, type, capacity, speed);
-        System.out.println("Vehicle created -> " + newVehicle);
-        database.add(newVehicle);
-
-        id++;
-
-        return ResponseEntity.ok(newVehicle);
+        return ResponseEntity.ok(vehicle);
     }
 
     @GetMapping
@@ -49,15 +46,14 @@ public class VehicleController {
     // ! VEHICLE CREATION ENDPOINT
     /**
      * * Creates a vehicle based on query parameters.
-     * * Returning the abstraction (Vehicle) allows polymorphic responses (Truck, Drone, Van).
+     * * Returning the abstraction  allows polymorphic responses (Truck, Drone, Van).
      */
     @GetMapping("/create")
     public Vehicle createVehicle(
-            @RequestParam String type,
             @RequestParam int capacity,
             @RequestParam int speed) {
 
-        // * The controller does not know HOW to make a Truck; it asks the Factory.
-        return vehicleFactory.createVehicle(id, type, capacity, speed);
+        // * The controller does not know how to make a Truck => it asks the Factory.
+        return vehicleFactory.createVehicle(capacity, speed);
     }
 }
