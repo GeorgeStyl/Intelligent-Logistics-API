@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_name VARCHAR(255) NOT NULL,
     weight DOUBLE PRECISION NOT NULL,
     destination VARCHAR(255) NOT NULL,
-    shipping_type VARCHAR(50) NOT NULL,
+    shippingType VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
     cost DOUBLE PRECISION NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
