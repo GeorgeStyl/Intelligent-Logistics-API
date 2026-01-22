@@ -2,7 +2,7 @@ package org.stylianopoulos.logistics.controller.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.stylianopoulos.logistics.domain.entity.Order;
+import org.stylianopoulos.logistics.domain.entity.OrderRecord;
 import org.stylianopoulos.logistics.service.OrderAsyncService;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -19,9 +19,9 @@ public class ShippingController {
 
     // ! Thread 1: Responds instantly to the client
     @PostMapping("/process")
-    public Mono<ResponseEntity<String>> process(@RequestBody Order orderInput) {
+    public Mono<ResponseEntity<String>> process(@RequestBody OrderRecord orderRecordInput) {
         // * Trigger Thread 2
-        orderAsyncService.processOrderInBackground(orderInput);
+        orderAsyncService.processOrderInBackground(orderRecordInput);
         // * This response is sent back to Postman immediately
         return Mono.just(
                     ResponseEntity

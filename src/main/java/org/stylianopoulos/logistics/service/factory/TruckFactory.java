@@ -8,12 +8,27 @@ import org.stylianopoulos.logistics.model.impl.Truck;
 public class TruckFactory implements VehicleFactory {
 
     @Override
-    public Vehicle createVehicle(String type, String licensePlate) {
-        return new Truck(type, licensePlate);
+    public Vehicle createVehicle(String type, String licensePlate, int   capacity, int speed) {
+        return new Truck(type, licensePlate, capacity, speed);
     }
 
     @Override
     public String getVehicleType() {
         return "TRUCK";
+    }
+
+    @Override
+    public String getVehicleLicencePlate() {
+        return "";
+    }
+
+    @Override
+    public String getVehicleCapacity() {
+        return "";
+    }
+
+    @Override
+    public String getVehicleSpeed() {
+        return "";
     }
 }

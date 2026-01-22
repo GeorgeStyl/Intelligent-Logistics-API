@@ -2,8 +2,7 @@ CREATE TABLE IF NOT EXISTS shipping_requests (
      id SERIAL PRIMARY KEY,
      vehicle_type VARCHAR(50) NOT NULL,
      payload_weight DOUBLE PRECISION NOT NULL,
-     velocity INT NOT NULL,
-     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+     velocity INT NOT NULL
 );
 
 
@@ -12,7 +11,8 @@ CREATE TABLE IF NOT EXISTS vehicles (
     id SERIAL PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
     licensePlate VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    capacity INT NOT NULL ,
+    speed INT NULL
 );
 
 
@@ -24,6 +24,5 @@ CREATE TABLE IF NOT EXISTS orders (
     destination VARCHAR(255) NOT NULL,
     shippingType VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
-    cost DOUBLE PRECISION NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    cost DOUBLE PRECISION NOT NULL
 );

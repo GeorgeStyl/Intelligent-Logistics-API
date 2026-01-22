@@ -18,11 +18,13 @@ public class VehicleController {
     @GetMapping("/create-async")
     public CompletableFuture<Vehicle> createVehicleAsync(
             @RequestParam String type,
-            @RequestParam String licensePlate
+            @RequestParam String licensePlate,
+            @RequestParam int capacity,
+            @RequestParam int speed
     ) {
 
         return CompletableFuture.supplyAsync(() ->
-                vehicleFactoryManager.createVehicle(type, licensePlate)
+                vehicleFactoryManager.createVehicle(type, licensePlate, capacity, speed)
         );
     }
 }
