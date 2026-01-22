@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Table("Vehicles")
 public record Vehicle(
-        @Id Long id,
         String type,
         String licensePlate
 ) {

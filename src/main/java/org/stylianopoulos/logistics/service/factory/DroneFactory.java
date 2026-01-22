@@ -8,8 +8,8 @@ import org.stylianopoulos.logistics.model.impl.Drone;
 public class DroneFactory implements VehicleFactory {
 
     @Override
-    public Vehicle createVehicle(int id, String type, String licensePlate) {
-        return new Drone(id, type, licensePlate);
+    public Vehicle createVehicle(String type, String licensePlate) {
+        return new Drone(type, licensePlate);
     }
 
     @Override

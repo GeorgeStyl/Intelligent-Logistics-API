@@ -4,8 +4,8 @@ import org.stylianopoulos.logistics.model.Vehicle;
 
 public class Truck extends Vehicle {
 
-    public Truck(int id, String type, String licensePlate) {
-        super(id, type, licensePlate);
+    public Truck(String type, String licensePlate) {
+        super(type, licensePlate);
     }
 
     @Override

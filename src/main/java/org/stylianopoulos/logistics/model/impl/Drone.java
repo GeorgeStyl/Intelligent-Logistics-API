@@ -4,8 +4,8 @@ import org.stylianopoulos.logistics.model.Vehicle;
 
 public class Drone extends Vehicle {
 
-    public Drone(int id, String type, String licensePlate) {
-        super(id, type, licensePlate);
+    public Drone(String type, String licensePlate) {
+        super(type, licensePlate);
     }
 
     @Override

@@ -8,9 +8,8 @@ import org.stylianopoulos.logistics.model.impl.Van;
 public class VanFactory implements VehicleFactory {
 
     @Override
-    public Vehicle createVehicle(int id, String type, String licensePlate) {
-
-        return new Van(id, type, licensePlate);
+    public Vehicle createVehicle(String type, String licensePlate) {
+        return new Van(type, licensePlate);
     }
 
     @Override
