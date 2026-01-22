@@ -3,10 +3,8 @@ package org.stylianopoulos.logistics.domain.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDateTime;
-
 @Table ("orders")
-public record Order(
+public record OrderRecord(
         @Id Long id,
         String customerName,
         Double weight,
@@ -15,7 +13,7 @@ public record Order(
         String status,
         Double cost
 ) {
-    public Order {
+    public OrderRecord {
         if (customerName == null || customerName.isBlank()) {
             throw new IllegalArgumentException("Customer name cannot be empty");
         }
