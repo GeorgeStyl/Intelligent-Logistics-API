@@ -15,6 +15,6 @@ public class VanFactory implements VehicleFactory {
 
     @Override
     public String getVehicleType() {
-        return "DRONE";
+        return "VAN";
     }
 }

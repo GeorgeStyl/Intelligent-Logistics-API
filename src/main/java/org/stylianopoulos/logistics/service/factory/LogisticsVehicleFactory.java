@@ -19,11 +19,13 @@ public class LogisticsVehicleFactory {
                 ));
     }
 
-    public Vehicle createVehicle(Double capacity, int speed) {
+    public Vehicle createVehicle(int id, String type, String licensePlate) {
         VehicleFactory factory = factoryMap.get(type.toUpperCase());
 
-        if (factory == null) throw new IllegalArgumentException("Unknown vehicle type: " + type);
+        if (factory == null) {
+            throw new IllegalArgumentException("Unknown vehicle type: " + type);
+        }
 
-        return factory.createVehicle(capacity, speed);
+        return factory.createVehicle(id, type, licensePlate);
     }
 }
