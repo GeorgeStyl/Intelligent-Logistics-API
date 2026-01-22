@@ -17,4 +17,14 @@ public class Van extends Vehicle {
     public String getVehicleLicensePlate() {
         return "";
     }
+
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
+
+    @Override
+    public int getSpeed() {
+        return 0;
+    }
 }

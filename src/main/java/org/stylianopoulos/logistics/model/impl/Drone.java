@@ -17,4 +17,14 @@ public class Drone extends Vehicle {
     public String getVehicleLicensePlate() {
         return getInternalLicensePlate();
     }
+
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
+
+    @Override
+    public int getSpeed() {
+        return 0;
+    }
 }

@@ -17,6 +17,11 @@ public abstract class Vehicle {
 
     public abstract String getVehicleLicensePlate();
 
+    public abstract int getCapacity();
+
+    public abstract int getSpeed();
+
+
     protected String getInternalType() { return type; }
     protected String getInternalLicensePlate() { return licensePlate; }
     protected int getInternalCapacity() { return capacity; }
