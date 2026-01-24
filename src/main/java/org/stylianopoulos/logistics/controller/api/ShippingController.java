@@ -29,7 +29,6 @@ public class ShippingController {
 
         // * Thread 1: Returns a PENDING status immediately
         // ? This is effectively the 'Asynchronous Request-Reply' pattern.
-        // ? We return 202 Accepted because the request is received but not yet finished.
         return Mono.just(
                 ResponseEntity
                         .status(HttpStatus.ACCEPTED)
