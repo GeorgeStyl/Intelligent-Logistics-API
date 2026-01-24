@@ -16,7 +16,6 @@ public class StandardShipping implements ShippingStrategy {
 
     @Async
     public CompletableFuture<Double> calculateAsync(double weight) {
-        // * Simulate complex calculation
         double result = weight * 10.5;
         return CompletableFuture.completedFuture(result);
     }

@@ -18,7 +18,7 @@ public class ExpressShipping implements ShippingStrategy {
     @Async
     public CompletableFuture<Double> calculateAsync(double weight) {
         // * Simulate complex calculation
-        double result = weight * 10.5;
+        double result = (weight * 2.5) + 1.5;
         return CompletableFuture.completedFuture(result);
     }
 

@@ -15,8 +15,7 @@ public class FreeShipping implements ShippingStrategy {
 
     @Async
     public CompletableFuture<Double> calculateAsync(double weight) {
-        // * Simulate complex calculation
-        double result = weight * 10.5;
+        double result = 0.0;
         return CompletableFuture.completedFuture(result);
     }
 
