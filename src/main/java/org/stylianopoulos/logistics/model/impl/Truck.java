@@ -1,30 +1,20 @@
 package org.stylianopoulos.logistics.model.impl;
 
+
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import org.stylianopoulos.logistics.model.Vehicle;
 
-public class Truck extends Vehicle {
 
-    public Truck(String type, String licensePlate, int  capacity, int speed) {
+@Entity
+@DiscriminatorValue("TRUCK")
+public class Truck extends Vehicle {
+    public Truck() {}
+    public Truck(String type, String licensePlate, int capacity, int speed) {
         super(type, licensePlate, capacity, speed);
     }
-
-    @Override
-    public String getVehicleType() {
-        return getInternalType();
-    }
-
-    @Override
-    public String getVehicleLicensePlate() {
-        return "";
-    }
-
-    @Override
-    public int getCapacity() {
-        return 0;
-    }
-
-    @Override
-    public int getSpeed() {
-        return 0;
-    }
+    @Override public String getVehicleType() { return "TRUCK"; }
+    @Override public String getVehicleLicensePlate() { return getInternalLicensePlate(); }
+    @Override public int getCapacity() { return getInternalCapacity(); }
+    @Override public int getSpeed() { return getInternalSpeed(); }
 }
