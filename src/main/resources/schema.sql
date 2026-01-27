@@ -1,16 +1,11 @@
-CREATE TABLE IF NOT EXISTS shipping_requests (
-     id SERIAL PRIMARY KEY,
-     vehicle_type VARCHAR(50) NOT NULL,
-     payload_weight DOUBLE PRECISION NOT NULL,
-     velocity INT NOT NULL
-);
-
+DROP TABLE IF EXISTS vehicles CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
 
 
 CREATE TABLE IF NOT EXISTS vehicles (
     id SERIAL PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
-    licensePlate VARCHAR(50) NOT NULL,
+    license_plate VARCHAR(50) NOT NULL,
     capacity INT NOT NULL ,
     speed INT NULL
 );
