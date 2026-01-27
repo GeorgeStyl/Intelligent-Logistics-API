@@ -1,35 +1,31 @@
 package org.stylianopoulos.logistics.exception;
 
-import org.springframework.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import reactor.core.publisher.Mono;
-import java.util.Map;
 
-
-// ! @RestControllerAdvice makes this class a global "catcher" for all controllers
 @RestControllerAdvice
-public class GlobalExceptionHandler extends RuntimeException {
-    @ExceptionHandler(IllegalArgumentException.class)
-    public Mono<ResponseEntity<Map<String, String>>> handleRecordValidation(IllegalArgumentException ex) {
-        // ! We return a Mono to maintain the Non-Blocking pipeline
-        return Mono.just(ResponseEntity.badRequest().body(Map.of(
-                "status", "400",
-                "error", "Domain Validation Failed",
-                "message", ex.getMessage()
-        )));
-    }
+public class GlobalExceptionHandler {
 
-    // ! Catching SQL grammar errors to prevent leaking raw trace to the client
-    @ExceptionHandler(BadSqlGrammarException.class)
-    public Mono<ResponseEntity<Map<String, String>>> handleDatabaseError(BadSqlGrammarException ex) {
-        return Mono.just(ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(
-                        "error", "Database Mapping Error",
-                        "message", "The database schema does not match the application model."
-                )));
+    // * Static logger instance for the class
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Void> handleAllExceptions(Exception ex) {
+        if (ex instanceof IllegalArgumentException) {
+            // * Specifically logging the factory error for unknown vehicle types
+            logger.warn("Input Validation Error: {}", ex.getMessage());
+            return ResponseEntity.badRequest().build();
+        } else if (ex instanceof NullPointerException) {
+            // * Logging potential data missing or logic issues
+            logger.error("Null Pointer Exception encountered: ", ex);
+            return ResponseEntity.internalServerError().build();
+        } else {
+            // ? Catch-all for any other runtime or checked exceptions
+            logger.error("Unexpected System Error: ", ex);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
