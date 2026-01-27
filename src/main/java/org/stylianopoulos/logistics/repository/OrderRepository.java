@@ -1,11 +1,10 @@
 package org.stylianopoulos.logistics.repository;
 
-import org.stylianopoulos.logistics.domain.entity.OrderRecord;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.stylianopoulos.logistics.model.Order;
 
-
-// * The repository handles Mono/Flux return types automatically
+// * Repository interface for Order persistence
 @Repository
-public interface OrderRepository extends R2dbcRepository<OrderRecord, Long> {
+public interface OrderRepository extends JpaRepository<Order, Integer> {
 }
