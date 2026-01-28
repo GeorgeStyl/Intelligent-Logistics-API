@@ -8,16 +8,10 @@ import java.util.concurrent.CompletableFuture;
 
 @Component("STANDARD")
 public class StandardShipping implements ShippingStrategy {
-    @Override
-    // * This allows the calling thread to remain free.
-    public Mono<Double> calculateCost(double weight) {
-        return Mono.fromFuture(calculateAsync(weight));
-    }
 
-    @Async
-    public CompletableFuture<Double> calculateAsync(double weight) {
-        double result = weight * 10.5;
-        return CompletableFuture.completedFuture(result);
+    @Override
+    public Double calculateCost(double weight) {
+        return weight * 2.5;
     }
 
     @Override
