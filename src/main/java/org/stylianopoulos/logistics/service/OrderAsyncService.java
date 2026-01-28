@@ -19,8 +19,8 @@ public class OrderAsyncService {
     private final ShippingContext shippingContext;
     private final OrderRepository orderRepository;
 
-    private LocalTime now = LocalTime.now();
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public OrderAsyncService(ShippingContext shippingContext, OrderRepository orderRepository) {
         this.shippingContext = shippingContext;
@@ -29,16 +29,11 @@ public class OrderAsyncService {
 
     @Async("logisticsExecutor")
     public void processOrderInBackground(OrderRequestDTO request) {
+        /********************************************************
+        * STEP 1) CALCULATE COST
+        *******************************************************/
+        String threadName = Thread.currentThread().getName();
         try {
-            // ! Requirement: Blocking 3-second delay on the Worker Thread
-            System.out.println("\n\n\nTime before sleeping for 3sec: " +
-                    now.format(formatter));
-
-            Thread.sleep(3000);
-
-            System.out.println("\n\n\nTime after sleeping for 3sec: " +
-                    now.format(formatter));
-
             // ! Bridge: Convert Mono to Future to handle the result asynchronously
             shippingContext.execute(request.shippingType(), request.weight())
                     .toFuture()
@@ -48,7 +43,7 @@ public class OrderAsyncService {
                                 request.weight(),
                                 request.destination(),
                                 request.shippingType(),
-                                "PROCESSED",
+                                "PENDING",
                                 cost
                         );
                         orderRepository.save(order);
@@ -59,6 +54,27 @@ public class OrderAsyncService {
                         return null;
                     });
 
+            /********************************************************
+            * STEP 2) SLEEP(3SEC)
+            * *******************************************************/
+            // ! Requirement: Blocking 3-second delay on the Worker Thread
+            System.out.println(
+                    "\n\n!!!" +
+                    "[" + threadName + "]" +
+                    " Time before sleeping for 3sec: " +
+                    LocalTime.now().format(formatter) +
+                    "!!!"
+            );
+
+            Thread.sleep(3000);
+
+            System.out.println(
+                    "\n\n!!!" +
+                    "[" + threadName + "]" +
+                    "Time after sleeping for 3sec: " +
+                    LocalTime.now().format(formatter) +
+                    "!!!\n\n"
+            );
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

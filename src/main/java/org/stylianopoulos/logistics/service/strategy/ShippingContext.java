@@ -16,6 +16,8 @@ public class ShippingContext {
     // ! Using a proper Logger instead of System.out
     private static final Logger log = LoggerFactory.getLogger(ShippingContext.class);
 
+    private String threadName = Thread.currentThread().getName();
+
     private final Map<String, ShippingStrategy> strategies;
 
     public ShippingContext(List<ShippingStrategy> strategyList) {
@@ -41,7 +43,12 @@ public class ShippingContext {
                 .flatMap(key -> Mono.justOrEmpty(strategies.get(key)))
                 // ! Using .map() because caclculateCost returns Double
                 .map(strategy -> strategy.calculateCost(weight))
-                .doOnNext(cost -> log.info("Calculated shipping cost for type {}: {}", type, cost))
+                .doOnNext(cost -> {
+                    String currentThread = Thread.currentThread().getName();
+                    log.info("[{}] Calculated shipping cost for type {}: {}",
+                            currentThread, type, cost
+                    );
+                })
                 .switchIfEmpty(Mono.error(() -> new IllegalArgumentException("Unsupported shipping: " + type)));
     }
 }

@@ -14,6 +14,7 @@ public class ShippingController {
 
     private final OrderAsyncService orderAsyncService;
 
+
     // * Dependency Injection via Constructor
     public ShippingController(OrderAsyncService orderAsyncService) {
         this.orderAsyncService = orderAsyncService;
@@ -23,6 +24,13 @@ public class ShippingController {
     // ? This ensures the Netty thread remains non-blocking.
     @PostMapping
     public Mono<ResponseEntity<String>> processOrder(@RequestBody OrderRequestDTO request) {
+        String threadName = Thread.currentThread().getName();
+
+        System.out.println(
+                "[" +threadName+ "-Thread] " +
+                "Received order request: " +
+                request
+        );
         // * Triggering Thread 2: The background worker
         // ! This uses @Async + CompletableFuture internally (as per your requirements)
         orderAsyncService.processOrderInBackground(request);
