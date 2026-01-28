@@ -43,7 +43,12 @@ public class IntelligentLogisticsApiApplication {
                     .uri(URI.create("http://localhost:8080/orders"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(
-                            "{\"customerName\":\"WARMUP_BOT\",\"weight\":1.0,\"destination\":\"INTERNAL\"}"
+                            "{" +
+                                    "\"customerName\":\"WARMUP_BOT\"," +
+                                    "\"weight\":1.0," +
+                                    "\"destination\":\"INTERNAL\"," + // <--- ADD THIS COMMA
+                                    "\"shippingType\": \"FREE\"" +
+                                    "}"
                     ))
                     .build();
 
