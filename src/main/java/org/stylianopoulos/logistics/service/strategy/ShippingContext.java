@@ -39,7 +39,8 @@ public class ShippingContext {
                 .map(String::toUpperCase)
                 // ? Map to skip if - else
                 .flatMap(key -> Mono.justOrEmpty(strategies.get(key)))
-                .flatMap(strategy -> strategy.calculateCost(weight))
+                // ! Using .map() because caclculateCost returns Double
+                .map(strategy -> strategy.calculateCost(weight))
                 .doOnNext(cost -> log.info("Calculated shipping cost for type {}: {}", type, cost))
                 .switchIfEmpty(Mono.error(() -> new IllegalArgumentException("Unsupported shipping: " + type)));
     }

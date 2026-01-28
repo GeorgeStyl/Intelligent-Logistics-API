@@ -11,13 +11,12 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class AsyncConfig {
 
-    // ! Custom pool for logistics background tasks
     @Bean(name = "logisticsExecutor")
     public Executor logisticsExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);
         executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(100);
+        executor.setQueueCapacity(25);
         executor.setThreadNamePrefix("LogisticsWorker-");
         executor.initialize();
         return executor;
