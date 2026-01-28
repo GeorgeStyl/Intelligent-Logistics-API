@@ -12,6 +12,11 @@ public class ExpressShipping implements ShippingStrategy {
     }
 
     @Override
+    public String getThreadNamePrefix(String threadName) {
+        return Thread.currentThread().getName();
+    }
+
+    @Override
     public String getStrategyName() {
         return "EXPRESS";
     }
