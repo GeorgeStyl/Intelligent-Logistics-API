@@ -11,6 +11,7 @@ import org.stylianopoulos.logistics.service.strategy.ShippingContext;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class OrderAsyncService {
@@ -19,7 +20,8 @@ public class OrderAsyncService {
     private final ShippingContext shippingContext;
     private final OrderRepository orderRepository;
 
-
+    // ? List for randomizing status and escape if-else-switch
+    private static final List<String> STATUS_POOL = List.of("PENDING", "SEND", "IN_PROGRESS", "SENDING");
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public OrderAsyncService(ShippingContext shippingContext, OrderRepository orderRepository) {
@@ -31,9 +33,10 @@ public class OrderAsyncService {
     public void processOrderInBackground(OrderRequestDTO request) {
         String threadName = Thread.currentThread().getName();
 
-        /********************************************************
-        * STEP 0) DISCARD WARM-UP REQUEST
-        *******************************************************/
+
+        //********************************************************
+        //* STEP 0) DISCARD WARM-UP REQUEST
+        //*******************************************************/
         if ("WARMUP_BOT".equalsIgnoreCase(request.customerName())) {
             logger.info(
                     "\n\n!!!" +
@@ -44,9 +47,11 @@ public class OrderAsyncService {
             return;
         }
 
-        /********************************************************
-        * STEP 1) CALCULATE COST
-        *******************************************************/
+
+        //********************************************************
+        //* STEP 1) CALCULATE COST && SAVE TO DB
+        //*******************************************************/
+        String assignedStatus = STATUS_POOL.get(new java.util.Random().nextInt(STATUS_POOL.size()));
         try {
             // ! Bridge: Convert Mono to Future to handle the result asynchronously
             shippingContext.execute(request.shippingType(), request.weight())
@@ -57,20 +62,27 @@ public class OrderAsyncService {
                                 request.weight(),
                                 request.destination(),
                                 request.shippingType(),
-                                "PENDING",
+                                assignedStatus, // Flagged randomly without IF/ELSE
                                 cost
                         );
-                        orderRepository.save(order);
-                        logger.info("[SUCCESS] Order {} saved. Final Cost: {}", request.orderId(), cost);
+                        // * 1. Save the order, JPA populates the 'id' field inside the 'order' object.
+                        Order savedOrder = orderRepository.save(order);
+
+                        // * 2. Get the ID that the DB generated
+                        Long generatedId = Long.valueOf(savedOrder.getId());
+
+                        logger.info("[SUCCESS] Order #{} saved for customer: {}. Total Cost: {}",
+                                generatedId, savedOrder.getCustomerName(), cost);
                     })
                     .exceptionally(ex -> {
                         logger.error("[FAILURE] Could not process order {}: {}", request.orderId(), ex.getMessage());
                         return null;
                     });
 
-            /********************************************************
-            * STEP 2) SLEEP(3SEC)
-            * *******************************************************/
+
+            //********************************************************
+            //* STEP 2) SLEEP(3SEC)
+            //* *******************************************************/
             // ! Requirement: Blocking 3-second delay on the Worker Thread
             System.out.println(
                     "\n\n!!!" +
