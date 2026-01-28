@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS orders CASCADE;
 CREATE TABLE IF NOT EXISTS vehicles (
     id SERIAL PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
-    license_plate VARCHAR(50) NOT NULL,
+    license_plate VARCHAR(50) NOT NULL UNIQUE,
     capacity INT NOT NULL ,
     speed INT NULL
 );
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_name VARCHAR(255) NOT NULL,
     weight DOUBLE PRECISION NOT NULL,
     destination VARCHAR(255) NOT NULL,
-    shippingType VARCHAR(50) NOT NULL,
+    shipping_type VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
     cost DOUBLE PRECISION NOT NULL
 );

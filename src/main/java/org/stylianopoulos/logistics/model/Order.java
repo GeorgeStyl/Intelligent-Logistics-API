@@ -2,34 +2,40 @@ package org.stylianopoulos.logistics.model;
 
 import jakarta.persistence.*;
 
-// * Represents an Order record in the PostgreSQL 'orders' table
 @Entity
 @Table(name = "orders")
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // ? Using quoted identifiers if you used camelCase in your schema.sql
-    @Column(name = "\"customerName\"")
-    private String customerName;
+    @Column(nullable = false)
+    private String customer_name;
 
-    private double weight;
+    @Column(nullable = false)
+    private Double weight;
+
+    @Column(nullable = false)
     private String destination;
 
-    // * Mandatory No-Args Constructor for JPA
-    protected Order() {}
+    @Column(nullable = false)
+    private String shipping_type;
 
-    public Order(String customerName, double weight, String destination) {
-        this.customerName = customerName;
+    @Column(nullable = false)
+    private String status;
+
+    @Column(nullable = false)
+    private Double cost;
+
+    public Order() {} // Mandatory JPA constructor
+
+    // Constructor used by OrderAsyncService
+    public Order(String customerName, Double weight, String destination, String shippingType, String status, Double cost) {
+        this.customer_name = customerName;
         this.weight = weight;
         this.destination = destination;
+        this.shipping_type = shippingType;
+        this.status = status;
+        this.cost = cost;
     }
-
-    // ! Standard getters are required for the persistence layer to read data
-    public Integer getId() { return id; }
-    public String getCustomerName() { return customerName; }
-    public double getWeight() { return weight; }
-    public String getDestination() { return destination; }
 }

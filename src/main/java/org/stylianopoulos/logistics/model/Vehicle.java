@@ -14,9 +14,10 @@ public abstract class Vehicle {
     private Integer id;
 
     // ! 'type' is marked as insertable/updatable false because the Discriminator manages it
-    @Column(name = "type", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private String type;
 
+    // Keep the Java variable as licensePlate
     @Column(name = "license_plate", unique = true, nullable = false)
     private String licensePlate;
 
