@@ -29,10 +29,24 @@ public class OrderAsyncService {
 
     @Async("logisticsExecutor")
     public void processOrderInBackground(OrderRequestDTO request) {
+        String threadName = Thread.currentThread().getName();
+
+        /********************************************************
+        * STEP 0) DISCARD WARM-UP REQUEST
+        *******************************************************/
+        if ("WARMUP_BOT".equalsIgnoreCase(request.customerName())) {
+            logger.info(
+                    "\n\n!!!" +
+                    "["+threadName+"]" +
+                    "Ignoring internal warm-up request from {}",
+                    request.customerName()
+            );
+            return;
+        }
+
         /********************************************************
         * STEP 1) CALCULATE COST
         *******************************************************/
-        String threadName = Thread.currentThread().getName();
         try {
             // ! Bridge: Convert Mono to Future to handle the result asynchronously
             shippingContext.execute(request.shippingType(), request.weight())
