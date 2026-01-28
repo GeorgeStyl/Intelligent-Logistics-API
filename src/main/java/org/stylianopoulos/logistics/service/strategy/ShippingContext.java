@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.stylianopoulos.logistics.exception.UnsupportedShippingStrategyException;
 import reactor.core.publisher.Mono;
 
 
@@ -49,8 +50,7 @@ public class ShippingContext {
                             currentThread, type, cost
                     );
                 })
-                .switchIfEmpty(Mono.error(() -> new IllegalArgumentException("Unsupported shipping: " + type)));
-    }
+                .switchIfEmpty(Mono.error(() -> new UnsupportedShippingStrategyException(type)));    }
 }
 
 

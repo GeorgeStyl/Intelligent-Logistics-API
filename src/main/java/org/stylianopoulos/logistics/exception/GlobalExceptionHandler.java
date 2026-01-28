@@ -15,7 +15,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Void> handleAllExceptions(Exception ex) {
         if (ex instanceof IllegalArgumentException) {
-            // * Specifically logging the factory error for unknown vehicle types
             logger.warn("Input Validation Error: {}", ex.getMessage());
             return ResponseEntity.badRequest().build();
         } else if (ex instanceof NullPointerException) {

@@ -75,7 +75,7 @@ public class OrderAsyncService {
                                 generatedId, savedOrder.getCustomerName(), cost);
                     })
                     .exceptionally(ex -> {
-                        logger.error("[FAILURE] Could not process order {}: {}", request.orderId(), ex.getMessage());
+                        logger.error("[ERROR] Could not process order {}: {}", request.orderId(), ex.getMessage());
                         return null;
                     });
 
