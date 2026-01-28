@@ -1,67 +1,66 @@
 package org.stylianopoulos.logistics.service;
 
-import org.stylianopoulos.logistics.domain.entity.OrderRecord;
-import org.stylianopoulos.logistics.dto.OrderRequestDTO;
-import org.stylianopoulos.logistics.repository.OrderRepository;
-import org.stylianopoulos.logistics.service.strategy.ShippingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
+import org.stylianopoulos.logistics.dto.OrderRequestDTO;
+import org.stylianopoulos.logistics.model.Order;
+import org.stylianopoulos.logistics.repository.OrderRepository;
+import org.stylianopoulos.logistics.service.strategy.ShippingContext;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-import java.time.Duration;
-import java.util.concurrent.CompletableFuture;
-
-// ! Async Service Orchestration
 @Service
 public class OrderAsyncService {
 
+    private static final Logger logger = LoggerFactory.getLogger(OrderAsyncService.class);
     private final ShippingContext shippingContext;
     private final OrderRepository orderRepository;
+
+    private LocalTime now = LocalTime.now();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public OrderAsyncService(ShippingContext shippingContext, OrderRepository orderRepository) {
         this.shippingContext = shippingContext;
         this.orderRepository = orderRepository;
     }
 
-    // ! Non-Blocking to Async Bridge
     @Async("logisticsExecutor")
-    public CompletableFuture<OrderRecord> processOrderInBackground(OrderRequestDTO request) {
-        OrderRecord orderEntity = mapToDomain(request);
+    public void processOrderInBackground(OrderRequestDTO request) {
+        try {
+            // ! Requirement: Blocking 3-second delay on the Worker Thread
+            System.out.println("\n\n\nTime before sleeping for 3sec: " +
+                    now.format(formatter));
 
-        return Mono.delay(Duration.ofSeconds(3))
-                // ! After 3 seconds, proceed to shipping context logic
-                .flatMap(delay -> shippingContext.execute(
-                        orderEntity.shippingType(),
-                        orderEntity.weight()
-                ))
-                // ? Map the result to our final Processed OrderRecord object
-                .map(cost -> createProcessedOrder(orderEntity, cost))
-                .toFuture();
-    }
+            Thread.sleep(3000);
 
-    // helper for mapping prevents code duplication
-    private OrderRecord mapToDomain(OrderRequestDTO dto) {
-        return new OrderRecord(
-                Long.parseLong(dto.orderId()),
-                dto.customerName(),
-                dto.weight(),
-                dto.shippingType(),
-                dto.destination(),
-                "PENDING",
-                0.0
-        );
-    }
+            System.out.println("\n\n\nTime after sleeping for 3sec: " +
+                    now.format(formatter));
 
-    private OrderRecord createProcessedOrder(OrderRecord input, Double calculatedCost) {
-        // * Using Record constructor for thread-safety and immutability
-        return new OrderRecord(
-                input.id(),
-                input.customerName(),
-                input.weight(),
-                input.shippingType(),
-                input.destination(),
-                "PROCESSED",
-                calculatedCost
-        );
+            // ! Bridge: Convert Mono to Future to handle the result asynchronously
+            shippingContext.execute(request.shippingType(), request.weight())
+                    .toFuture()
+                    .thenAccept(cost -> {
+                        Order order = new Order(
+                                request.customerName(),
+                                request.weight(),
+                                request.destination(),
+                                request.shippingType(),
+                                "PROCESSED",
+                                cost
+                        );
+                        orderRepository.save(order);
+                        logger.info("[SUCCESS] Order {} saved. Final Cost: {}", request.orderId(), cost);
+                    })
+                    .exceptionally(ex -> {
+                        logger.error("[FAILURE] Could not process order {}: {}", request.orderId(), ex.getMessage());
+                        return null;
+                    });
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
