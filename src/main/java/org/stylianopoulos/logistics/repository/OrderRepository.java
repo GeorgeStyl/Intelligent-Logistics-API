@@ -6,4 +6,5 @@ import org.stylianopoulos.logistics.model.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
+// ? Keep this empty!! JpaRepository gives .save(), .findAll(), etc.
 }
