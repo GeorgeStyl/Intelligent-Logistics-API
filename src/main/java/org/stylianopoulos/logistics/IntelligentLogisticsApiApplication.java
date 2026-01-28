@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -18,6 +19,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 
 @SpringBootApplication
+@EnableAsync
 public class IntelligentLogisticsApiApplication {
     private static final Logger logger = LoggerFactory.getLogger(IntelligentLogisticsApiApplication.class);
 
