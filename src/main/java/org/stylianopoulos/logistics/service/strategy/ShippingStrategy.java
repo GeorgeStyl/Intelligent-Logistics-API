@@ -1,5 +1,6 @@
 package org.stylianopoulos.logistics.service.strategy;
 
+import org.stylianopoulos.logistics.model.Order;
 import reactor.core.publisher.Mono;
 
 public interface ShippingStrategy {

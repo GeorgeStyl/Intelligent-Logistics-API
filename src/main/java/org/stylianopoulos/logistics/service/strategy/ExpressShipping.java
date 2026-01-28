@@ -1,6 +1,7 @@
 package org.stylianopoulos.logistics.service.strategy;
 
 import org.springframework.stereotype.Component;
+import org.stylianopoulos.logistics.model.Order;
 import reactor.core.publisher.Mono;
 
 @Component("EXPRESS")

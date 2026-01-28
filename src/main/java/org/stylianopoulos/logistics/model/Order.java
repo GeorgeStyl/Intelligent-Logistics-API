@@ -1,16 +1,19 @@
 package org.stylianopoulos.logistics.model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "orders")
+@EntityListeners(AuditingEntityListener.class) // This "listens" for the create event
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id; // Matches SERIAL in schema
 
-    @Column(nullable = false)
-    private String customer_name;
+    @Column(name = "customer_name", nullable = false)
+    private String customerName;
 
     @Column(nullable = false)
     private Double weight;
@@ -18,8 +21,8 @@ public class Order {
     @Column(nullable = false)
     private String destination;
 
-    @Column(nullable = false)
-    private String shipping_type;
+    @Column(name = "shipping_type", nullable = false)
+    private String shippingType;
 
     @Column(nullable = false)
     private String status;
@@ -27,15 +30,29 @@ public class Order {
     @Column(nullable = false)
     private Double cost;
 
-    public Order() {} // Mandatory JPA constructor
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private java.time.LocalDateTime createdAt;
 
-    // Constructor used by OrderAsyncService
+    public Order() {}
+
     public Order(String customerName, Double weight, String destination, String shippingType, String status, Double cost) {
-        this.customer_name = customerName;
+        this.customerName = customerName;
         this.weight = weight;
         this.destination = destination;
-        this.shipping_type = shippingType;
+        this.shippingType = shippingType;
         this.status = status;
         this.cost = cost;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

@@ -2,6 +2,7 @@ package org.stylianopoulos.logistics.service.strategy;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.stylianopoulos.logistics.model.Order;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.CompletableFuture;
