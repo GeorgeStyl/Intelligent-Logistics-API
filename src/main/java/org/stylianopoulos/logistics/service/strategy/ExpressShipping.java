@@ -9,9 +9,9 @@ public class ExpressShipping implements ShippingStrategy {
 
     @Override
     public Double calculateCost(double weight) {
-        return (weight * 2.5) + 1.5;
+        double baseCost = weight * 2.5;
+        return baseCost * 1.5;
     }
-
     @Override
     public String getThreadNamePrefix(String threadName) {
         return Thread.currentThread().getName();
