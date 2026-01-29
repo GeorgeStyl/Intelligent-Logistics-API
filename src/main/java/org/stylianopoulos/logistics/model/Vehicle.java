@@ -1,5 +1,6 @@
 package org.stylianopoulos.logistics.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 // * Base entity mapping for Single Table Inheritance
@@ -45,14 +46,17 @@ public abstract class Vehicle {
 
     // ? Internal accessors used by the Factory logic
     // ! Changed from protected to public to allow Service access
+    @JsonIgnore
     public String getInternalType() {
         return type;
     }
 
+    @JsonIgnore
     public String getInternalLicensePlate() {
         return licensePlate;
     }
 
+    @JsonIgnore
     public int getInternalCapacity() {
         return capacity;
     }

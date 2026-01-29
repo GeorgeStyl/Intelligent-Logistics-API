@@ -7,6 +7,10 @@ import org.stylianopoulos.logistics.service.factory.LogisticsVehicleFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 @Service
 public class VehicleManagementService {
 
@@ -19,20 +23,22 @@ public class VehicleManagementService {
         this.vehicleFactory = vehicleFactory;
     }
 
-    public void processVehicle(String type, String licensePlate) {
-        repository.findByLicensePlate(licensePlate).ifPresentOrElse(
-                dbVehicle -> {
-                    // * Now accessible because getters are public
-                    Vehicle instance = vehicleFactory.createVehicle(
-                            dbVehicle.getInternalType(),
-                            dbVehicle.getInternalLicensePlate(),
-                            dbVehicle.getInternalCapacity(),
-                            dbVehicle.getInternalSpeed()
-                    );
-
-                    logger.info("Instantiated: {} | Plate: {}", instance.getClass().getSimpleName(), instance.getVehicleLicensePlate());
-                },
-                () -> { throw new IllegalArgumentException("Vehicle not found: " + licensePlate); }
-        );
+    public List<Vehicle> processVehicle(String type) {
+        //**********************************************
+        // * STREAM API PROCESSING
+        // ? RETURN AT RANDOM
+        //*********************************************
+        return Collections.singletonList(repository.findByType(type.toUpperCase())
+                .stream()
+                .map(dbVehicle -> vehicleFactory.createVehicle(
+                        dbVehicle.getInternalType(),
+                        dbVehicle.getInternalLicensePlate(),
+                        dbVehicle.getInternalCapacity(),
+                        dbVehicle.getInternalSpeed()
+                ))
+                // ! Choose 1 at random
+                .sorted((a, b) -> new Random().nextInt(3) - 1)
+                .findAny() // ! Returns Optional<Vehicle>
+                .orElseThrow(() -> new IllegalArgumentException("No vehicles available for type: " + type)));
     }
 }
