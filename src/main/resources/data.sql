@@ -16,12 +16,21 @@ INSERT INTO vehicles (type, license_plate, capacity, speed, created_at) VALUES
     ('DRONE', 'DRN-007-G', 18, 48, CURRENT_TIMESTAMP)
 ON CONFLICT (license_plate) DO NOTHING;
 
-INSERT INTO orders (customer_name, weight, destination, shipping_type, status, cost, created_at) VALUES
-    ('Alpha Corp', 120.5, 'Athens, Greece', 'EXPRESS', 'PENDING', 450.00, CURRENT_TIMESTAMP),
-    ('Beta Logistics', 500.0, 'Thessaloniki, Greece', 'STANDARD', 'IN_PROGRESS', 1200.50, CURRENT_TIMESTAMP),
-    ('Gamma Retail', 15.2, 'Patra, Greece', 'ECONOMY', 'DELIVERED', 55.00, CURRENT_TIMESTAMP),
-    ('Delta Manufacturing', 2200.0, 'Heraklion, Greece', 'HEAVY_LOAD', 'PENDING', 4500.00, CURRENT_TIMESTAMP),
-    ('Epsilon Tech', 2.5, 'Larissa, Greece', 'EXPRESS', 'IN_PROGRESS', 25.00, CURRENT_TIMESTAMP)
-ON CONFLICT DO NOTHING;
 
+
+INSERT INTO orders (customer_name, weight, destination, shipping_type, status, cost, created_at) VALUES
+    ('Titan Logistics', 1250.0, 'Patra, Greece', 'HEAVY_LOAD', 'PENDING', 3200.00, CURRENT_TIMESTAMP),
+    ('Eco-Green Solutions', 45.8, 'Volos, Greece', 'STANDARD', 'IN_PROGRESS', 115.50, CURRENT_TIMESTAMP),
+    ('Athens Tech Hub', 5.2, 'Athens, Greece', 'EXPRESS', 'PENDING', 45.00, CURRENT_TIMESTAMP),
+    ('Northern Imports', 3400.0, 'Thessaloniki, Greece', 'HEAVY_LOAD', 'IN_PROGRESS', 5500.00, CURRENT_TIMESTAMP),
+    ('Island Traders', 12.5, 'Chania, Greece', 'ECONOMY', 'DELIVERED', 35.00, CURRENT_TIMESTAMP),
+    ('Skyline Retail', 150.0, 'Rhodes, Greece', 'STANDARD', 'PENDING', 420.00, CURRENT_TIMESTAMP),
+    ('FastTrack Couriers', 2.0, 'Ioannina, Greece', 'EXPRESS', 'DELIVERED', 25.00, CURRENT_TIMESTAMP),
+    ('Aegean Maritime', 5000.0, 'Piraeus, Greece', 'HEAVY_LOAD', 'PENDING', 8500.00, CURRENT_TIMESTAMP),
+    ('Global Pharma', 18.2, 'Larissa, Greece', 'EXPRESS', 'IN_PROGRESS', 65.00, CURRENT_TIMESTAMP),
+    ('Mountain Peaks', 75.5, 'Trikala, Greece', 'STANDARD', 'DELIVERED', 180.00, CURRENT_TIMESTAMP),
+    ('Solar Energy Co', 220.0, 'Kalamata, Greece', 'STANDARD', 'PENDING', 480.00, CURRENT_TIMESTAMP),
+    ('Hellenic Fabrics', 650.0, 'Serres, Greece', 'STANDARD', 'IN_PROGRESS', 1100.00, CURRENT_TIMESTAMP),
+    ('Deep Sea Exports', 4200.0, 'Heraklion, Greece', 'HEAVY_LOAD', 'PENDING', 7200.00, CURRENT_TIMESTAMP),
+    ('Urban Styles', 25.0, 'Kavala, Greece', 'ECONOMY', 'DELIVERED', 45.00, CURRENT_TIMESTAMP);
 DELETE FROM vehicles WHERE type = 'MOTORCYCLE';
