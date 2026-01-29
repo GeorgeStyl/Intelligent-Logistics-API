@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "c569994a-4811-4efa-92b5-d65f362d4b91",
+		"name": "Stylianopoulos_Project2",
+		"description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51258989",
+		"_collection_link": "https://geostyunipi-6005032.postman.co/workspace/geosty's-Workspace~f5630520-b89c-4aeb-8503-a4dc384beedd/collection/51258989-c569994a-4811-4efa-92b5-d65f362d4b91?action=share&source=collection_link&creator=51258989"
+	},
+	"item": [
+		{
+			"name": "GetDrone",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/vehicles/init?type=Drone",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"vehicles",
+						"init"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Drone"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTruck",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/vehicles/init?type=Truck",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"vehicles",
+						"init"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Truck"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetVan",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/vehicles/init?type=Van",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"vehicles",
+						"init"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Van"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBadRequest",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/vehicles/init?type=D90mipe",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"vehicles",
+						"init"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "D90mipe"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostSTANDARD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerName\": \"Ziggy STANDARD\",\n    \"weight\": 7,\n    \"destination\": \"Mars\",\n    \"shippingType\": \"STANDARD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostEXPRESS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerName\": \"George EXPRESS\",\n    \"weight\": 10,\n    \"destination\": \"Athens, Greece\",\n    \"shippingType\": \"EXPRESS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					],
+					"query": [
+						{
+							"key": "customerName",
+							"value": "George S.",
+							"disabled": true
+						},
+						{
+							"key": "weight",
+							"value": "5.5",
+							"disabled": true
+						},
+						{
+							"key": "destination",
+							"value": "Athens, Greece",
+							"disabled": true
+						},
+						{
+							"key": "shippingType",
+							"value": "EXPRESS",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostFREE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerName\": \"Ziggy FREE\",\n    \"weight\": 10,\n    \"destination\": \"Mars\",\n    \"shippingType\": \"FREE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostBAD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerName\": \"Taylor BAD\",\n    \"weight\": 10,\n    \"destination\": \"Mars\",\n    \"shippingType\": \"Default\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAnalytics",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerName\": \"Ziggy STANDARD\",\n    \"weight\": 7,\n    \"destination\": \"Mars\",\n    \"shippingType\": \"STANDARD\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/analytics",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"analytics"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
