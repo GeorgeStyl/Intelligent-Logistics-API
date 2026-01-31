@@ -5,6 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface ShippingStrategy {
     String getStrategyName(); // Should return "EXPRESS", "STANDARD", etc.
-    Double calculateCost(double weight);
+    Double paymentProcessing(double weight);
     String getThreadNamePrefix(String threadName);
 }

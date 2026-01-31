@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 public class StandardShipping implements ShippingStrategy {
 
     @Override
-    public Double calculateCost(double weight) {
+    public Double paymentProcessing(double weight) {
         return weight * 2.5;
     }
 

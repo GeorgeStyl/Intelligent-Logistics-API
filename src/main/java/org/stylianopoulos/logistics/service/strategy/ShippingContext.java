@@ -43,7 +43,7 @@ public class ShippingContext {
                 // ? Map to skip if - else
                 .flatMap(key -> Mono.justOrEmpty(strategies.get(key)))
                 // ! Using .map() because caclculateCost returns Double
-                .map(strategy -> strategy.calculateCost(weight))
+                .map(strategy -> strategy.paymentProcessing(weight))
                 .doOnNext(cost -> {
                     String currentThread = Thread.currentThread().getName();
                     log.info("[{}] Calculated shipping cost for type {}: {}",

@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 public class ExpressShipping implements ShippingStrategy {
 
     @Override
-    public Double calculateCost(double weight) {
+    public Double paymentProcessing(double weight) {
         double baseCost = weight * 2.5;
         return baseCost * 1.5;
     }
