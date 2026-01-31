@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record VehicleResponseDTO(
         String type,
 
-        @JsonProperty("license_plate") // Keeps JSON naming consistent with your DB/Schema
+        @JsonProperty("license_plate") // Keeps JSON naming consistent with DB/Schema
         String licensePlate,
 
         int speed,
