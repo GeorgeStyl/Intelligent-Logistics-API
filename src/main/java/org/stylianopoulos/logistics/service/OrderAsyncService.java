@@ -47,12 +47,35 @@ public class OrderAsyncService {
             return;
         }
 
-
         //********************************************************
-        //* STEP 1) CALCULATE COST && SAVE TO DB
-        //*******************************************************/
+        //* STEP 1) SLEEP(3SEC)
+        //* *******************************************************/
         String assignedStatus = STATUS_POOL.get(new java.util.Random().nextInt(STATUS_POOL.size()));
         try {
+
+
+            // ! Requirement: Blocking 3-second delay on the Worker Thread
+            System.out.println(
+                    "\n\n!!!" +
+                            "[" + threadName + "]" +
+                            " Time before sleeping for 3sec: " +
+                            LocalTime.now().format(formatter) +
+                            "!!!"
+            );
+
+            Thread.sleep(3000);
+
+            System.out.println(
+                    "\n\n!!!" +
+                            "[" + threadName + "]" +
+                            "Time after sleeping for 3sec: " +
+                            LocalTime.now().format(formatter) +
+                            "!!!\n\n"
+            );
+
+            //********************************************************
+            //* STEP 2) CALCULATE COST && SAVE TO DB
+            //*******************************************************/
             // ! Bridge: Convert Mono to Future to handle the result asynchronously
             shippingContext.execute(request.shippingType(), request.weight())
                     .toFuture()
@@ -79,28 +102,6 @@ public class OrderAsyncService {
                         return null;
                     });
 
-
-            //********************************************************
-            //* STEP 2) SLEEP(3SEC)
-            //* *******************************************************/
-            // ! Requirement: Blocking 3-second delay on the Worker Thread
-            System.out.println(
-                    "\n\n!!!" +
-                    "[" + threadName + "]" +
-                    " Time before sleeping for 3sec: " +
-                    LocalTime.now().format(formatter) +
-                    "!!!"
-            );
-
-            Thread.sleep(3000);
-
-            System.out.println(
-                    "\n\n!!!" +
-                    "[" + threadName + "]" +
-                    "Time after sleeping for 3sec: " +
-                    LocalTime.now().format(formatter) +
-                    "!!!\n\n"
-            );
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
