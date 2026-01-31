@@ -17,7 +17,7 @@ public class ShippingContext {
     // ! Using a proper Logger instead of System.out
     private static final Logger log = LoggerFactory.getLogger(ShippingContext.class);
 
-    private String threadName = Thread.currentThread().getName();
+        private String threadName = Thread.currentThread().getName();
 
     private final Map<String, ShippingStrategy> strategies;
 
@@ -42,7 +42,7 @@ public class ShippingContext {
                 .map(String::toUpperCase)
                 // ? Map to skip if - else
                 .flatMap(key -> Mono.justOrEmpty(strategies.get(key)))
-                // ! Using .map() because caclculateCost returns Double
+                // ! Using .map() because paymentProcessing returns Double
                 .map(strategy -> strategy.paymentProcessing(weight))
                 .doOnNext(cost -> {
                     String currentThread = Thread.currentThread().getName();
