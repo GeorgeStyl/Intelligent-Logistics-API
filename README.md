@@ -35,7 +35,7 @@ Shipping logic is encapsulated within interchangeable strategy classes. This eli
 
 ---
 
-## 🧵 Concurrency & Multithreading
+## Concurrency & Multithreading
 
 ### Custom Thread Management
 The system uses a dedicated `ThreadPoolTaskExecutor` defined in `AsyncConfig`. This ensures that asynchronous operations are handled by a controlled pool of workers, preventing resource exhaustion and providing better monitoring.
@@ -59,7 +59,7 @@ To verify true multithreading, the following logs demonstrate the **Start -> Sle
 
 ---
 
-## ⚡ Performance Optimization: The Warmup Bot
+## Performance Optimization: The Warmup Bot
 
 During initial testing, the first HTTP request to the API consistently exceeded **200ms**, while subsequent requests averaged around **7ms**. This latency is a known behavior in Java environments due to JIT compilation and socket initialization.
 
