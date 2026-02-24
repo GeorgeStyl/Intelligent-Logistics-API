@@ -7,6 +7,22 @@ The system manages the lifecycle of logistics operations: from the dynamic creat
 
 ---
 
+## ⚙️ Prerequisites & Setup
+
+> **Important:** Before running the application, you must have **Docker Desktop** (or Docker Engine) installed and **started**. The system relies on a PostgreSQL container defined in the project structure.
+
+1.  **Start Docker:** Ensure your Docker daemon is active.
+2.  **Launch Database:** Run the following command in the project root:
+    ```bash
+    docker-compose up -d
+    ```
+3.  **Run Application:** Launch via IntelliJ IDEA Ultimate or use Maven:
+    ```bash
+    mvn spring-boot:run
+    ```
+
+---
+
 ## 🛠 Architectural Design Patterns
 
 ### 1. Abstract Factory Pattern
@@ -19,7 +35,7 @@ Shipping logic is encapsulated within interchangeable strategy classes. This eli
 
 ---
 
-## 🧵 Concurrency & Multithreading
+## Concurrency & Multithreading
 
 ### Custom Thread Management
 The system uses a dedicated `ThreadPoolTaskExecutor` defined in `AsyncConfig`. This ensures that asynchronous operations are handled by a controlled pool of workers, preventing resource exhaustion and providing better monitoring.
@@ -27,8 +43,6 @@ The system uses a dedicated `ThreadPoolTaskExecutor` defined in `AsyncConfig`. T
 **Package:** `org.stylianopoulos.logistics.config`
 **Reason:** This package is reserved for configuration classes that bootstrap the Spring Context. By placing the `AsyncConfig` here, we follow the **Single Responsibility Principle** at the package level.
 
-**Implementation Detail:**
-![AsyncConfig Implementation](image_52a0ad.png)
 
 // * FLAG: CONCURRENCY & MULTITHREADING
 As shown in the configuration above, we define a core pool of 5 threads that can scale to 10, ensuring the application remains responsive under load.
@@ -36,16 +50,23 @@ As shown in the configuration above, we define a core pool of 5 threads that can
 ### Multithreading Verification & Logs
 To verify true multithreading, the following logs demonstrate the **Start -> Sleep -> End** lifecycle. Notice the unique thread IDs and names, proving tasks run in parallel across different workers.
 
-[INSERT PHOTO HERE: Multithreading logs showing parallel execution]
+<table>
+  <tr>
+    <td><img src="assets/parallel_thread_sleep.png" width="400"></td>
+    <td><img src="assets/parallel_thread_sleep2.png" width="400"></td>
+  </tr>
+</table>
 
 ---
 
-## ⚡ Performance Optimization: The Warmup Bot
+## Performance Optimization: The Warmup Bot
 
 During initial testing, the first HTTP request to the API consistently exceeded **200ms**, while subsequent requests averaged around **7ms**. This latency is a known behavior in Java environments due to JIT compilation and socket initialization.
 
 * **Technique:** An internal `WARMUP_BOT` sends a dummy request upon startup.
 * **Result:** The bot ensures the very first user-initiated request achieves low latency immediately.
+**WARMUP_BOT handling**
+![Internal request with dummy data](assets/warmup_bot.png)
 
 ---
 
@@ -57,6 +78,9 @@ During initial testing, the first HTTP request to the API consistently exceeded 
 **Endpoint:** `GET /vehicles/init?type={type}`
 **Parameters:** `type` (Drone / Van / Truck)
 **Sample:** `{{baseUrl}}/vehicles/init?type=Drone`
+**Response Details**
+![Get/Vehicle response](assets/getDrone.png)
+
 
 ### 2. Order Placement
 **Endpoint:** `POST /orders`
@@ -69,10 +93,32 @@ During initial testing, the first HTTP request to the API consistently exceeded 
     "shippingType": "STANDARD" 
 }
 ```
+**Response Details**
+![Post/orders response](assets/postOrders.png)
+
 
 ### 3. Analytics
+**Description**: Retrieves system-wide logs and processing metrics.
 **Endpoint** `GET /analytics`
-**Description:** Retrieves system-wide logs and processing metrics.
+**Response Details**
+![Analytics response](assets/getAnalytics.png)
+
 
 ### Postman Verification & Documentation
 I have uploaded the dedicated Postman Collection file: `Stylianopoulos_Project2.postman_collection.json`
+
+
+
+### Infrastructure & Standards
+
+- Database: PostgreSQL (Managed via the included docker-compose.yml)
+- Build Tool: Maven
+
+- IDE: IntelliJ IDEA Ultimate
+
+- Clean Code: Strictly No Lombok; all POJO elements (constructors, getters, setters) are manually written for maximum transparency and control.
+
+- Polymorphism: Strategically preferred over conditionals (Strategy Pattern) for a scalable architecture.
+
+- Single Responsibility: Adherence to "One File for One Use" across DTOs and Factories.
+
