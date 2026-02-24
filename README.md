@@ -28,11 +28,12 @@ The system manages the lifecycle of logistics operations: from the dynamic creat
 ### 1. Abstract Factory Pattern
 
 We use this pattern to manage the instantiation of different vehicle types. This decouples the client code from concrete classes, allowing the system to introduce new transport methods (like "Cargo Ships") without modifying existing service logic. This enforces the **Dependency Inversion Principle**.
+![Abstract Factory pattern UML](assets/VehicleFactory_UML.png)
 
 ### 2. Strategy Pattern
 
 Shipping logic is encapsulated within interchangeable strategy classes. This eliminates brittle conditional logic (if/else) and allows the application to switch between Standard, Express, and Free shipping models at runtime, adhering to the **Open/Closed Principle**.
-
+![Strategy pattern UML](assets/StrategyPattern_UML.png)
 ---
 
 ## Concurrency & Multithreading
