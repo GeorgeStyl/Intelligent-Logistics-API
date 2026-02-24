@@ -11,7 +11,7 @@ The system manages the lifecycle of logistics operations: from the dynamic creat
 
 ### 1. Abstract Factory Pattern
 
-We use this pattern to manage the instantiation of different vehicle types. This decouples the client code from concrete classes, allowing the system to introduce new transport methods without modifying existing service logic. This enforces the **Dependency Inversion Principle**.
+We use this pattern to manage the instantiation of different vehicle types. This decouples the client code from concrete classes, allowing the system to introduce new transport methods (like "Cargo Ships") without modifying existing service logic. This enforces the **Dependency Inversion Principle**.
 
 ### 2. Strategy Pattern
 
@@ -19,48 +19,60 @@ Shipping logic is encapsulated within interchangeable strategy classes. This eli
 
 ---
 
-## Concurrency & Multithreading
+## 🧵 Concurrency & Multithreading
 
 ### Custom Thread Management
 The system uses a dedicated `ThreadPoolTaskExecutor` defined in `AsyncConfig`. This ensures that asynchronous operations are handled by a controlled pool of workers, preventing resource exhaustion and providing better monitoring.
 
 **Package:** `org.stylianopoulos.logistics.config`
-**Reason:** This package is reserved for configuration classes that bootstrap the Spring Context. By placing the `AsyncConfig` here, we follow the **Single Responsibility Principle** at the package level, separating system-wide settings from business logic.
+**Reason:** This package is reserved for configuration classes that bootstrap the Spring Context. By placing the `AsyncConfig` here, we follow the **Single Responsibility Principle** at the package level.
 
-### Single Responsibility
-To maintain a high level of **Clean Code**, the project follows the principle of having a single file for a single, well-defined use case. This is visible in our DTO and Factory structures, where each class has exactly one reason to change, significantly reducing side effects during refactoring.
+**Implementation Detail:**
+![AsyncConfig Implementation](image_52a0ad.png)
 
-### Multithreading Verification
-To verify true multithreading, the following screenshot displays the console logs showing the **Start -> Sleep -> End** lifecycle. You can observe the `LogisticsWorker-X` thread names executing tasks in parallel, proving that the system does not process orders sequentially.
+// * FLAG: CONCURRENCY & MULTITHREADING
+As shown in the configuration above, we define a core pool of 5 threads that can scale to 10, ensuring the application remains responsive under load.
 
+### Multithreading Verification & Logs
+To verify true multithreading, the following logs demonstrate the **Start -> Sleep -> End** lifecycle. Notice the unique thread IDs and names, proving tasks run in parallel across different workers.
 
-
----
-
-## Performance Optimization: The Warmup Bot
-
-During initial testing, it was observed that the first HTTP request to the API consistently exceeded **200ms**, while subsequent requests averaged around **7ms**. This latency is a known behavior in Java environments due to JIT (Just-In-Time) compilation, class loading, and the initialization of network sockets/connection pools.
-
-To mitigate this, I implemented an **Internal Warmup Bot**.
-
-* **Technique:** Upon application startup, the system triggers a "dummy" internal request (`WARMUP_BOT`).
-* **Result:** This bot "consumes" the initial overhead of the JVM and Spring infrastructure. Consequently, the very first user-initiated request benefits from a pre-warmed environment, achieving the same high-speed performance (low latency) as subsequent calls.
+[INSERT PHOTO HERE: Multithreading logs showing parallel execution]
 
 ---
 
-## 🚀 API Testing & Documentation
+## ⚡ Performance Optimization: The Warmup Bot
 
-The API endpoints were rigorously tested using **Postman**. The following screenshots demonstrate successful vehicle creation, order placement, and dynamic shipping calculations.
+During initial testing, the first HTTP request to the API consistently exceeded **200ms**, while subsequent requests averaged around **7ms**. This latency is a known behavior in Java environments due to JIT compilation and socket initialization.
 
-
-
----
-
-## 🗄 Infrastructure & Standards
-* **Database:** PostgreSQL (Managed via Docker)
-* **Build Tool:** Maven
-* **IDE:** IntelliJ IDEA Ultimate
-* **Clean Code:** Strictly **No Lombok**; all POJO elements (constructors, getters, setters) are manually written for maximum transparency.
-* **Polymorphism:** Strategically preferred over conditionals to ensure a scalable and maintainable architecture.
+* **Technique:** An internal `WARMUP_BOT` sends a dummy request upon startup.
+* **Result:** The bot ensures the very first user-initiated request achieves low latency immediately.
 
 ---
+
+## 🛰 API Endpoints & Request Samples
+
+**Base URL:** `http://localhost:8080`
+
+### 1. Vehicle Initialization
+**Endpoint:** `GET /vehicles/init?type={type}`
+**Parameters:** `type` (Drone / Van / Truck)
+**Sample:** `{{baseUrl}}/vehicles/init?type=Drone`
+
+### 2. Order Placement
+**Endpoint:** `POST /orders`
+**Request Body:**
+```json
+{
+    "customerName": "Ziggy STANDARD",
+    "weight": 7,
+    "destination": "Mars",
+    "shippingType": "STANDARD" 
+}
+```
+
+### 3. Analytics
+**Endpoint** `GET /analytics`
+**Description:** Retrieves system-wide logs and processing metrics.
+
+### Postman Verification & Documentation
+I have uploaded the dedicated Postman Collection file: `Stylianopoulos_Project2.postman_collection.json`
