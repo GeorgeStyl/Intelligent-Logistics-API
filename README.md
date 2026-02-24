@@ -45,6 +45,9 @@ The system uses a dedicated `ThreadPoolTaskExecutor` defined in `AsyncConfig`. T
 
 
 // * FLAG: CONCURRENCY & MULTITHREADING
+**Custom poll of threads configuration**
+![Internal request with dummy data](assets/custom_threads_settings.png)
+
 As shown in the configuration above, we define a core pool of 5 threads that can scale to 10, ensuring the application remains responsive under load.
 
 ### Multithreading Verification & Logs
