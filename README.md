@@ -77,6 +77,8 @@ During initial testing, the first HTTP request to the API consistently exceeded 
 **Parameters:** `type` (Drone / Van / Truck)
 **Sample:** `{{baseUrl}}/vehicles/init?type=Drone`
 
+
+
 ### 2. Order Placement
 **Endpoint:** `POST /orders`
 **Request Body:**
@@ -88,6 +90,9 @@ During initial testing, the first HTTP request to the API consistently exceeded 
     "shippingType": "STANDARD" 
 }
 ```
+** Response Details**
+![Post/orders response](assets/postOrders.png)
+
 
 ### 3. Analytics
 **Description**: Retrieves system-wide logs and processing metrics.
