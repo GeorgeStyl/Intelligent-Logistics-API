@@ -43,8 +43,6 @@ The system uses a dedicated `ThreadPoolTaskExecutor` defined in `AsyncConfig`. T
 **Package:** `org.stylianopoulos.logistics.config`
 **Reason:** This package is reserved for configuration classes that bootstrap the Spring Context. By placing the `AsyncConfig` here, we follow the **Single Responsibility Principle** at the package level.
 
-**Implementation Detail:**
-![AsyncConfig Implementation](assets/image_52a0ad.png)
 
 // * FLAG: CONCURRENCY & MULTITHREADING
 As shown in the configuration above, we define a core pool of 5 threads that can scale to 10, ensuring the application remains responsive under load.
@@ -52,7 +50,12 @@ As shown in the configuration above, we define a core pool of 5 threads that can
 ### Multithreading Verification & Logs
 To verify true multithreading, the following logs demonstrate the **Start -> Sleep -> End** lifecycle. Notice the unique thread IDs and names, proving tasks run in parallel across different workers.
 
-[INSERT PHOTO HERE: Multithreading logs showing parallel execution]
+<table>
+  <tr>
+    <td><img src="assets/parallel_thread_sleep.png" width="400"></td>
+    <td><img src="assets/parallel_thread_sleep2.png" width="400"></td>
+  </tr>
+</table>
 
 ---
 
