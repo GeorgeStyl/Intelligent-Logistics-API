@@ -65,6 +65,8 @@ During initial testing, the first HTTP request to the API consistently exceeded 
 
 * **Technique:** An internal `WARMUP_BOT` sends a dummy request upon startup.
 * **Result:** The bot ensures the very first user-initiated request achieves low latency immediately.
+**WARMUP_BOT handling**
+![Internal request with dummy data](assets/warmup_bot.png)
 
 ---
 
@@ -76,7 +78,8 @@ During initial testing, the first HTTP request to the API consistently exceeded 
 **Endpoint:** `GET /vehicles/init?type={type}`
 **Parameters:** `type` (Drone / Van / Truck)
 **Sample:** `{{baseUrl}}/vehicles/init?type=Drone`
-
+**Response Details**
+![Get/Vehicle response](assets/getDrone.png)
 
 
 ### 2. Order Placement
@@ -90,13 +93,15 @@ During initial testing, the first HTTP request to the API consistently exceeded 
     "shippingType": "STANDARD" 
 }
 ```
-** Response Details**
+**Response Details**
 ![Post/orders response](assets/postOrders.png)
 
 
 ### 3. Analytics
 **Description**: Retrieves system-wide logs and processing metrics.
 **Endpoint** `GET /analytics`
+**Response Details**
+![Analytics response](assets/getAnalytics.png)
 
 
 ### Postman Verification & Documentation
